@@ -15,6 +15,8 @@ class LoginController extends Controller
             'email' => 'required|email',
             'password' => 'required',
             'device_name' => 'required',
+            'nickname' => 'required',
+            'is_email_enabled' => 'required',
         ]);
 
         $hashedPassword = Hash::make($request->password);
@@ -23,6 +25,8 @@ class LoginController extends Controller
         $newUser->email = $request->email;
         $newUser->password = $hashedPassword;
         $newUser->name = $request->device_name;
+        $newUser->nickname = $request->nickname;
+        $newUser->is_email_enabled = $request->is_email_enabled;
         $newUser->created_at = date('Y-m-d H:i:s', time());
         $newUser->updated_at = date('Y-m-d H:i:s', time());
         $newUser->save();
