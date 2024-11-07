@@ -58,8 +58,8 @@ def compare_images(url1: str, url2: str) -> list[tuple[int, int]]:
     cv2.imwrite("diff.png", image1_color)
 
     # Odstránenie dočasných súborov
-    os.remove("image1.png")
-    os.remove("image2.png")
+    # os.remove("image1.png")
+    # os.remove("image2.png")
 
     return differences
 
