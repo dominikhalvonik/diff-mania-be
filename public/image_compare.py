@@ -24,8 +24,8 @@ def compare_images(url1: str, url2: str) -> list[tuple[int, int]]:
         print('Images already downloaded')
 
     # Načítanie obrázkov
-    image1 = cv2.imread("image1.png", cv2.IMREAD_GRAYSCALE)
-    image2 = cv2.imread("image2.png", cv2.IMREAD_GRAYSCALE)
+    image1 = cv2.imread("1.png", cv2.IMREAD_GRAYSCALE)
+    image2 = cv2.imread("2.png", cv2.IMREAD_GRAYSCALE)
 
     # Skontrolovanie, či obrázky majú rovnaké rozmery
     if image1.shape != image2.shape:
