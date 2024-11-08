@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import json
+import time
 
 def merge_bounding_boxes(bboxes, merge_threshold=5):
     # List to hold merged bounding boxes
@@ -145,4 +146,8 @@ def main():
     create_sections_from_differences(image1_path, json_path, output_image_path)
 
 if __name__ == "__main__":
+    t1 = time.time()
     main()
+    t2 = time.time()
+
+    print(f"Execution time: {t2 - t1} seconds")
