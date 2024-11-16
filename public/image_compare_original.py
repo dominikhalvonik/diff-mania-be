@@ -3,7 +3,7 @@ import numpy as np
 import requests
 import os
 
-def download_image(url, save_path):
+def download_image(url: str, save_path: str) -> bool:
     response = requests.get(url)
     if response.status_code == 200:
         with open(save_path, 'wb') as f:
@@ -13,10 +13,15 @@ def download_image(url, save_path):
         return False
     return True
 
-def compare_images(url1, url2):
-    # Stiahnutie obrázkov
-    if not download_image(url1, "image1.png") or not download_image(url2, "image2.png"):
-        return []
+def compare_images(url1: str, url2: str) -> list[tuple[int, int]]:
+    # Check if the images are loaded already
+    if not os.path.isfile("image1.png") or not os.path.isfile("image2.png"):
+        # Download images
+        print('Downloading images...')
+        if not download_image(url1, "image1.png") or not download_image(url2, "image2.png"):
+            return []
+    else:
+        print('Images already downloaded')
 
     # Načítanie obrázkov
     image1 = cv2.imread("image1.png", cv2.IMREAD_GRAYSCALE)
@@ -44,9 +49,17 @@ def compare_images(url1, url2):
                 cY = int(M["m01"] / M["m00"])
                 differences.append((cX, cY))
 
+    # Create an image with the different areas highlighted make the dots in the middle of the differences
+    image1_color = cv2.imread("image1.png")
+    for diff in differences:
+        cv2.circle(image1_color, (diff[0], diff[1]), 5, (0, 0, 255), -1)
+
+    # Uloženie obrázku s rozdielmi
+    cv2.imwrite("diff.png", image1_color)
+
     # Odstránenie dočasných súborov
-    os.remove("image1.png")
-    os.remove("image2.png")
+    # os.remove("image1.png")
+    # os.remove("image2.png")
 
     return differences
 
