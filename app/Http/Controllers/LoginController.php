@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\LoginService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+
 class LoginController extends Controller
 {
-    public function register(Request $request): JsonResponse
+    public function register(Request $request, LoginService $loginService): JsonResponse
     {
         $request->validate([
             'email' => 'required|email',
@@ -19,21 +21,8 @@ class LoginController extends Controller
             'is_email_enabled' => 'required',
         ]);
 
-        $hashedPassword = Hash::make($request->password);
-
-        $newUser = new User();
-        $newUser->email = $request->email;
-        $newUser->password = $hashedPassword;
-        $newUser->name = $request->device_name;
-        $newUser->nickname = $request->nickname;
-        $newUser->is_email_enabled = $request->is_email_enabled;
-        $newUser->created_at = date('Y-m-d H:i:s', time());
-        $newUser->updated_at = date('Y-m-d H:i:s', time());
-        $newUser->save();
-
-        $tokenInfo = $newUser->createToken($request->device_name)->plainTextToken;
-        $tokenData = explode("|", $tokenInfo);
-        $token = $tokenData[1];
+        $newUser = $loginService->createNewUser($request);
+        $token = $loginService->createToken($newUser, $request->device_name);
 
         return response()->json([
             'success' => true,
@@ -52,7 +41,7 @@ class LoginController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'success' => false,
                 'message' => 'The provided credentials are incorrect.'
@@ -81,10 +70,4 @@ class LoginController extends Controller
         ]);
     }
 
-    public function test(Request $request): JsonResponse
-    {
-        return response()->json([
-            $request->user()
-        ]);
-    }
 }
