@@ -7,6 +7,7 @@ use App\Services\LoginService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Mail;
 
 
 class LoginController extends Controller
@@ -23,6 +24,9 @@ class LoginController extends Controller
 
         $newUser = $loginService->createNewUser($request);
         $token = $loginService->createToken($newUser, $request->device_name);
+
+        // Send verification email
+        $loginService->sendVerificationEmail($newUser);
 
         return response()->json([
             'success' => true,

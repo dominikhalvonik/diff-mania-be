@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerifyEmail;
 
 class LoginService
 {
@@ -43,5 +45,16 @@ class LoginService
     $tokenInfo = $user->createToken($deviceName)->plainTextToken;
     $tokenData = explode("|", $tokenInfo);
     return $tokenData[1];
+  }
+
+  /**
+   * Send verification email
+   * @param \App\Models\User $newUser
+   * @return void
+   */
+  public function sendVerificationEmail(User $newUser): void
+  {
+    // Use VerifyEmail mailable
+    Mail::to($newUser)->send(new VerifyEmail());
   }
 }
