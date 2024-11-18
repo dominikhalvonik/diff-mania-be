@@ -7,7 +7,6 @@ use App\Services\LoginService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Mail;
 
 
 class LoginController extends Controller
@@ -27,6 +26,7 @@ class LoginController extends Controller
 
         // Send verification email
         $loginService->sendVerificationEmail($newUser);
+        $loginService->createBasicPlayerAttributes($newUser);
 
         return response()->json([
             'success' => true,
