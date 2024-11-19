@@ -11,7 +11,16 @@ use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
-    public function register(Request $request, LoginService $loginService): JsonResponse
+
+    /**
+     * Costructor with dependency injection of LoginService
+     */
+    public function __construct(private LoginService $loginService)
+    {
+    }
+
+
+    public function register(Request $request): JsonResponse
     {
         $request->validate([
             'email' => 'required|email',
@@ -21,12 +30,12 @@ class LoginController extends Controller
             'is_email_enabled' => 'required',
         ]);
 
-        $newUser = $loginService->createNewUser($request);
-        $token = $loginService->createToken($newUser, $request->device_name);
+        $newUser = $this->loginService->createNewUser($request);
+        $token = $this->loginService->createToken($newUser, $request->device_name);
 
         // Send verification email
-        $loginService->sendVerificationEmail($newUser);
-        $loginService->createBasicPlayerAttributes($newUser);
+        $this->loginService->sendVerificationEmail($newUser);
+        $this->loginService->createBasicPlayerAttributes($newUser);
 
         return response()->json([
             'success' => true,
