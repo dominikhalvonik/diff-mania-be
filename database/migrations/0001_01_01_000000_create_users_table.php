@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('nickname');
+            $table->string('profile_image_url')->nullable();
             $table->boolean('is_email_enabled');
             $table->rememberToken();
             $table->timestamps();
