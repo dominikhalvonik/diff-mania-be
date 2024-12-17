@@ -15,7 +15,6 @@ return new class extends Migration {
             $table->foreignId('episode_id')->constrained()->onDelete('cascade');
             $table->integer('level_number');
             $table->smallInteger('difficulty');
-            $table->integer('max_stars')->default(3);
             $table->timestamps();
         });
     }

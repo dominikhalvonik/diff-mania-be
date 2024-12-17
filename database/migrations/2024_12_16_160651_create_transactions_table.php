@@ -15,7 +15,6 @@ return new class extends Migration {
             $table->foreignUuid('user_id')->constrained()->onDelete('cascade');
             $table->smallInteger('transaction_type');
             $table->integer('amount');
-            $table->timestamp('timestamp')->useCurrent();
             $table->timestamps();
         });
     }
