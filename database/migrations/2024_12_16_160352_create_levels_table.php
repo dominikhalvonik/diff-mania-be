@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('levels', function (Blueprint $table) {
             $table->id();
             $table->foreignId('episode_id')->constrained()->onDelete('cascade');
-            $table->integer('level_number');
+            $table->integer('number');
             $table->smallInteger('difficulty');
             $table->timestamps();
         });
