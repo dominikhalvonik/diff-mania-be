@@ -12,12 +12,11 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasUuids, SoftDeletes;
+    use HasApiTokens, HasFactory, HasUuids, Notifiable, SoftDeletes;
 
     protected $keyType = 'string';
 
     public $incrementing = false;
-
 
     /**
      * The attributes that are mass assignable.
@@ -59,9 +58,16 @@ class User extends Authenticatable
     /**
      * Get the player attributes for the user. Loader eager for attribute definitions.
      */
-
     public function playerAttributes()
     {
-        return $this->hasMany(PlayerAttributes::class)->with('playerAttributesDefinition');
+        return $this->hasMany(PlayerAttribute::class)->with('playerAttributeDefinition');
+    }
+
+    /**
+     * Get the player level progress for the user.
+     */
+    public function playerLevelProgress()
+    {
+        return $this->hasMany(PlayerLevelProgress::class);
     }
 }

@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('player_attribute_definitions', function (Blueprint $table) {
+        Schema::create('settings', function (Blueprint $table) {
             $table->id();
+
+            $table->string('name')->unique()->comment('Setting name');
+
             $table->timestamps();
-            $table->string('name');
-            $table->string('description');
-            $table->integer('default_value')->default(0);
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('player_attribute_definitions');
+        Schema::dropIfExists('settings');
     }
 };

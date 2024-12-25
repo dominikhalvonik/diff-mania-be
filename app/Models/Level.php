@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use \App\Models\Episodes;
 
-class Levels extends Model
+class Level extends Model
 {
     use HasFactory;
 
@@ -23,9 +22,20 @@ class Levels extends Model
         'episode_id' => 'integer',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     // Level belongs to episode
     public function episode()
     {
-        return $this->belongsTo(Episodes::class);
+        return $this->belongsTo(Episode::class);
+    }
+
+    // Level has many level progress
+    public function playerLevelProgress()
+    {
+        return $this->hasMany(PlayerLevelProgress::class);
     }
 }

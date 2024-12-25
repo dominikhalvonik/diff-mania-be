@@ -4,10 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Levels;
 
-
-class Episodes extends Model
+class Episode extends Model
 {
     use HasFactory;
 
@@ -22,10 +20,15 @@ class Episodes extends Model
         'unlock_coins' => 'integer',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     // Episode has many levels
     public function levels()
     {
-        return $this->hasMany(Levels::class);
+        return $this->hasMany(Level::class);
     }
 
     // Get levels count

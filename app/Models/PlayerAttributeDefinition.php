@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PlayerAttributesDefinitions extends Model
+class PlayerAttributeDefinition extends Model
 {
     use HasFactory;
 
@@ -14,9 +14,9 @@ class PlayerAttributesDefinitions extends Model
         'description',
     ];
 
-    public function playerAttributes()
+    public function playerAttribute()
     {
-        return $this->hasMany(PlayerAttributes::class);
+        return $this->hasMany(PlayerAttribute::class);
     }
 
     public function getAttribute($attribute)

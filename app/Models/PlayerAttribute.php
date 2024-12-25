@@ -4,15 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\PlayerAttributesDefinitions;
 
-class PlayerAttributes extends Model
+class PlayerAttribute extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'player_id',
-        'player_attributes_definition_id',
+        'player_attribute_definition_id',
         'value',
     ];
 
@@ -21,9 +20,8 @@ class PlayerAttributes extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function playerAttributesDefinition()
+    public function playerAttributeDefinition()
     {
-        return $this->belongsTo(PlayerAttributesDefinitions::class);
+        return $this->belongsTo(PlayerAttributeDefinition::class);
     }
-
 }

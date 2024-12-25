@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('player_attribute_definitions', function (Blueprint $table) {
+        Schema::create('user_settings', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignUuid('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('setting_id')->constrained()->onDelete('cascade');
+            $table->string('value');
+
             $table->timestamps();
-            $table->string('name');
-            $table->string('description');
-            $table->integer('default_value')->default(0);
         });
     }
 
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('player_attribute_definitions');
+        Schema::dropIfExists('user_settings');
     }
 };
