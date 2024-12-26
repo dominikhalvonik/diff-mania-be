@@ -13,7 +13,9 @@ class LoginController extends Controller
     /**
      * Costructor with dependency injection of LoginService
      */
-    public function __construct(private LoginService $loginService) {}
+    public function __construct(private LoginService $loginService)
+    {
+    }
 
     public function register(Request $request): JsonResponse
     {
@@ -28,7 +30,7 @@ class LoginController extends Controller
         $newUser = $this->loginService->createNewUser($request);
         $token = $this->loginService->createToken($newUser, $request->device_name);
 
-        $this->loginService->sendVerificationEmail($newUser);
+        // $this->loginService->sendVerificationEmail($newUser);
         $this->loginService->createBasicPlayerAttributes($newUser);
         $this->loginService->createUserSettings($newUser);
 
@@ -49,7 +51,7 @@ class LoginController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'success' => false,
                 'message' => 'The provided credentials are incorrect.',

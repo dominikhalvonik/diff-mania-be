@@ -28,4 +28,27 @@ class LevelController extends Controller
 
         return response()->json($imageInformations);
     }
+
+    public function finishLevel(Request $request, Level $level)
+    {
+        $user = $request->user();
+
+        $request->validate([
+            'score' => 'required|integer|min:0|max:3'
+        ]);
+
+        // Check if the achieved score is higher then the score allready achieved
+        $currentProgress = $user->playerLevelProgress()->where('level_id', $level->id)->first();
+
+        if ($currentProgress && $currentProgress->progress >= $request->score) {
+            return response()->json(['message' => 'Level allready finished with a higher score']);
+        }
+
+        $user->playerLevelProgress()->updateOrCreate(
+            ['level_id' => $level->id],
+            ['progress' => $request->score]
+        );
+
+        return response()->json(['message' => 'Level finished']);
+    }
 }

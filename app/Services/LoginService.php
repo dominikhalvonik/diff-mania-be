@@ -74,7 +74,7 @@ class LoginService
     public function sendVerificationEmail(User $newUser): void
     {
         // Use VerifyEmail mailable
-        Mail::to($newUser)->send(new VerifyEmail);
+        Mail::to($newUser)->send(new VerifyEmail($newUser));
     }
 
     /**
