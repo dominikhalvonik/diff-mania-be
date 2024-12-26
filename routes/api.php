@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LevelController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MainPageController;
 use App\Http\Controllers\PlayerProgressPage;
@@ -14,4 +15,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/logout', [LoginController::class, 'logout']);
     Route::get('/main', [MainPageController::class, 'index']);
     Route::get('/progress', [PlayerProgressPage::class, 'index']);
+    Route::get('/level/{id}', [LevelController::class, 'getLevelDataWithImages']);
 });

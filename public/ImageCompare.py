@@ -85,6 +85,12 @@ class ImageCompare:
     self.differences = self.merge_bounding_boxes(bboxes)
 
     return self.differences
+  
+  def create_out_path(self, out_path):
+    # Create the out directory if it does not exist
+    if not os.path.exists(out_path):
+      os.makedirs(out_path)
+      
 
   def save_differences_to_json(self, image_id: str, out_path: str = "out") -> None:
     """
@@ -102,11 +108,25 @@ class ImageCompare:
     }
     
     # Create the out directory if it does not exist
-    if not os.path.exists(out_path):
-      os.makedirs(out_path)
+    self.create_out_path(out_path)
   
     with open(f"{out_path}/{image_id}.json", "w") as f:
       json.dump(data, f)
+      
+  def return_differences_as_json(self) -> str:
+    """
+    Return differences as a JSON string.
+
+    :return: JSON string of differences.
+    """
+    if not hasattr(self, 'differences'):
+      raise ValueError("Differences have not been calculated. Please run find_image_differences first.")
+    
+    data = {
+      "differences": self.differences
+    }
+    
+    return json.dumps(data)
 
 
   def create_image_with_differences(self, image1_path: str, output_image_path: str) -> None:
@@ -131,3 +151,19 @@ class ImageCompare:
       
     cv2.imwrite(output_image_path, img)
     print(f"Image with sections saved as {output_image_path}")
+
+  def save_original_images(self, image1_path: str, image2_path: str, output_image_path: str) -> None:
+    """
+    Save the original images to the output folder.
+    """
+    if not hasattr(self, 'differences'):
+      raise ValueError("Differences have not been calculated. Please run find_image_differences first.")
+    
+    self.create_out_path(output_image_path)
+    
+    img1 = cv2.imread(image1_path)
+    img2 = cv2.imread(image2_path)
+    
+    cv2.imwrite(f"{output_image_path}/image1.png", img1)
+    cv2.imwrite(f"{output_image_path}/image2.png", img2)
+    print(f"Original images saved as {output_image_path}/image1.png and {output_image_path}/image2.png")

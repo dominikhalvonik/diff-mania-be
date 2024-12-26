@@ -10,9 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('boosters', function (Blueprint $table) {
+        Schema::create('level_images', function (Blueprint $table) {
             $table->id();
-            $table->string('booster_type')->unique();
+
+            $table->foreignId('level_id')->constrained()->onDelete('cascade');
+            $table->foreignId('image_id')->constrained()->onDelete('cascade');
+
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('boosters');
+        Schema::dropIfExists('level_images');
     }
 };

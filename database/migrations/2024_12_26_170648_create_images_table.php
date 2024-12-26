@@ -10,9 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('boosters', function (Blueprint $table) {
+        Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->string('booster_type')->unique();
+
+            $table->string('path');
+            $table->integer('differences');
+            $table->longText('json_diff');
+
             $table->timestamps();
         });
     }
@@ -22,6 +26,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('boosters');
+        Schema::dropIfExists('images');
     }
 };

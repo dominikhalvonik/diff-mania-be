@@ -2,6 +2,17 @@ from ImageCompare import ImageCompare
 import os 
 import time
 
+# Set up connection to mariadb use the same as laravel
+import mysql.connector
+
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="sail",
+  password="password",
+  database="diff-mania"
+)
+
+
 def main():
   # Load all paths to images recursively from the in folder
   images = []
@@ -30,13 +41,26 @@ def main():
     
     # Get the image id from the image path
     image_id = image1_path.split("/")[1]
-    print(image_id)
     
     # Save them to json in the out directory
-    comparer.save_differences_to_json("difference", f"out/{image_id}")
+    # comparer.save_differences_to_json("difference", f"out/{image_id}")
+    json = comparer.return_differences_as_json()
+    
+    output_path = f"out/{image_id}"
+    
+    comparer.save_original_images(image1_path, image2_path, output_path)
+    mycursor = mydb.cursor()
+  
+    
+    # Use the already created table images in the database. Save the image path in public folder amount of differences and as a string the json_diff
+    sql = "INSERT INTO images (path, differences, json_diff, created_at, updated_at) VALUES (%s, %s, %s, %s, %s)"
+    val = (output_path, len(differences), json, time.strftime('%Y-%m-%d %H:%M:%S'), time.strftime('%Y-%m-%d %H:%M:%S'))
+    mycursor.execute(sql, val)
+    mydb.commit() 
+    print("Commited to DB")
     
     # # Show the differences on an image
-    comparer.create_image_with_differences(image1_path, f"out/{image_id}/differences.png")
+    # comparer.create_image_with_differences(image1_path, f"out/{image_id}/differences.png")
   
   
 if __name__ == "__main__":
