@@ -25,6 +25,18 @@ services:
             - mysql
             - redis
             - mailpit
+
+    diff-finder:
+        build:
+            context: ./diff-finder
+            dockerfile: Dockerfile
+        volumes:
+          - ./diff-finder:/app
+        networks:
+            - sail
+        depends_on:
+            - laravel.test
+
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -49,6 +61,7 @@ services:
                 - '-p${DB_PASSWORD}'
             retries: 3
             timeout: 5s
+
     redis:
         image: 'redis:alpine'
         ports:
@@ -64,6 +77,7 @@ services:
                 - ping
             retries: 3
             timeout: 5s
+
     mailpit:
         image: 'axllent/mailpit:latest'
         ports:
@@ -71,9 +85,11 @@ services:
             - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025'
         networks:
             - sail
+
 networks:
     sail:
         driver: bridge
+        
 volumes:
     sail-mysql:
         driver: local
