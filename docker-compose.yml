@@ -30,8 +30,6 @@ services:
         build:
             context: ./diff-finder
             dockerfile: Dockerfile
-        volumes:
-          - ./diff-finder:/app
         networks:
             - sail
         depends_on:
