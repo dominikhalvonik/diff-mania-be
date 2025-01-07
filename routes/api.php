@@ -13,7 +13,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', [UserController::class, 'getUserData'])->name('user');
+    Route::get('/load_user_data', [UserController::class, 'loadUserData'])->name('load_user');
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/main', [MainPageController::class, 'index'])->name('main');
     Route::get('/progress', [PlayerProgressPage::class, 'index'])->name('progress');

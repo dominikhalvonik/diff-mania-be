@@ -11,8 +11,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('images', function (Blueprint $table) {
-            $table->id();
 
+            $table->string('name')->primary();
             $table->string('path');
             $table->integer('differences');
             $table->longText('json_diff');

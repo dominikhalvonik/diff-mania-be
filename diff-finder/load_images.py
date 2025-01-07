@@ -75,8 +75,8 @@ def main():
     
     if result[0] == 0:
       # Use the already created table images in the database. Save the image path in public folder amount of differences and as a string the json_diff
-      sql = "INSERT INTO images (path, differences, json_diff, created_at, updated_at) VALUES (%s, %s, %s, %s, %s)"
-      val = (f'images/{image_id}', len(differences), json, time.strftime('%Y-%m-%d %H:%M:%S'), time.strftime('%Y-%m-%d %H:%M:%S'))
+      sql = "INSERT INTO images (name, path, differences, json_diff, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s)"
+      val = (image_id, f'images/{image_id}', len(differences), json, time.strftime('%Y-%m-%d %H:%M:%S'), time.strftime('%Y-%m-%d %H:%M:%S'))
       mycursor.execute(sql, val)
       mydb.commit()
     else:

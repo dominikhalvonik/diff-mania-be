@@ -15,7 +15,7 @@ class LevelImageSeeder extends Seeder
     {
         LevelImage::create([
             'level_id' => 1,
-            'image_id' => 1,
+            'image_name' => 1,
         ]);
     }
 }

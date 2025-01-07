@@ -14,7 +14,8 @@ return new class extends Migration {
             $table->id();
 
             $table->foreignId('level_id')->constrained()->onDelete('cascade');
-            $table->foreignId('image_id')->constrained()->onDelete('cascade');
+            $table->string('image_name');
+            $table->foreign('image_name')->references('name')->on('images')->onDelete('cascade');
 
             $table->timestamps();
         });

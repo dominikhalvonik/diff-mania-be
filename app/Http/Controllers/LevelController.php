@@ -17,9 +17,9 @@ class LevelController extends Controller
             return Level::find($levelId);
         });
 
-        $levelImages = LevelImage::where('level_id', $level->id)->pluck('image_id')->all();
+        $levelImages = LevelImage::where('level_id', $level->id)->pluck('image_name')->all();
 
-        $imageInformations = Image::whereIn('id', $levelImages)->get();
+        $imageInformations = Image::whereIn('name', $levelImages)->get();
 
         // Revert the string json_diff to an array
         $imageInformations->each(function ($image) {
