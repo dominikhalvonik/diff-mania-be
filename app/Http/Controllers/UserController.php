@@ -99,12 +99,12 @@ class UserController extends Controller
 
         // Check if the user is authenticated
         if ($user) {
-            // Return the user's data with a success message
+            // Return every information from user and its attributes from db
             return response()->json([
                 'status' => 'success',
-                'message' => 'User data loaded successfully',
+                'message' => 'User data retrieved successfuly.',
                 'data' => $user
-            ]);
+            ], 200);
         } else {
             // Return an unauthorized response
             return response()->json([
