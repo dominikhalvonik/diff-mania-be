@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('rankings', function (Blueprint $table) {
             $table->id();
+
             $table->foreignUuid('user_id')->constrained()->onDelete('cascade');
             $table->integer('national_rank')->nullable();
             $table->integer('global_rank')->nullable();
+
             $table->timestamps();
         });
     }

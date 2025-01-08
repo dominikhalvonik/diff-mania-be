@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->integer('amount');
-            $table->foreignId('attribute_id')->constrained()->onDelete('cascade');
+            $table->foreignId('player_attribute_definition_id')->constrained()->onDelete('cascade');
             $table->foreignId('reward_id')->constrained()->onDelete('cascade');
 
 

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('rewards', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('attribute_id')->constrained()->onDelete('cascade');
+            $table->foreignId('player_attribute_definition_id')->constrained()->onDelete('cascade');
             $table->integer('amount');
 
             $table->timestamps();

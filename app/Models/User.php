@@ -70,4 +70,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(PlayerLevelProgress::class);
     }
+
+    /**
+     * Get the level progress count - it is the count of progress from the playerLevelProgress.
+     */
+    public function getLevelProgressCount(): int
+    {
+        return $this->playerLevelProgress()->sum('progress');
+    }
 }

@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('user_boosters', function (Blueprint $table) {
             $table->id();
+
             $table->foreignUuid('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('booster_id')->constrained('boosters')->cascadeOnDelete();
             $table->integer('count')->default(0);
+
             $table->timestamps();
         });
     }

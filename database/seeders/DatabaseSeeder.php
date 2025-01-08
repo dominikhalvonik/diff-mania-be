@@ -17,6 +17,9 @@ class DatabaseSeeder extends Seeder
         $this->call(LevelsTableSeeder::class);
         $this->call(BoostersTableSeeder::class);
         $this->call(SettingsSeeder::class);
+        $this->call(GameConfigSeeder::class);
+        $this->call(GameVersionSeeder::class);
+        $this->call(LevelConfigSeeder::class);
         // $this->call(LevelImageSeeder::class);
     }
 }
