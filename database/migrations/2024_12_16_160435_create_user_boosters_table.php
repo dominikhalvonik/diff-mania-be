@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->foreignUuid('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('booster_id')->constrained('boosters')->cascadeOnDelete();
-            $table->integer('count')->default(0);
+            $table->integer('quantity')->default(0);
 
             $table->timestamps();
         });

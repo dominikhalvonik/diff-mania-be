@@ -72,6 +72,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Player User Boosters
+     */
+    public function userBoosters()
+    {
+        return $this->hasMany(UserBooster::class);
+    }
+
+    /**
      * Get the level progress count - it is the count of progress from the playerLevelProgress.
      */
     public function getLevelProgressCount(): int

@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Booster extends Model
 {
     use HasFactory;
+
+    public function userBoosters()
+    {
+        return $this->hasMany(UserBooster::class);
+    }
 }

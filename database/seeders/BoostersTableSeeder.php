@@ -13,11 +13,11 @@ class BoostersTableSeeder extends Seeder
     public function run(): void
     {
         Booster::create([
-            'booster_type' => 'hint',
+            'name' => 'hint',
         ]);
 
         Booster::create([
-            'booster_type' => 'bonus_time',
+            'name' => 'bonus_time',
         ]);
     }
 }

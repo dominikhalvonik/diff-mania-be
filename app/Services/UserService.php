@@ -8,32 +8,17 @@ use Illuminate\Support\Facades\Cache;
 
 class UserService
 {
-  // It should return a an object like this:
+  // Just to not forget what I do not return and should
   //     {
   //       {
-  //             "name": "petko", //
-  //             "coins": 69,
-  //             "lives": 2,
   //             "timeForRefillLife": 200, 
-  //             "experience": 23, //Skusenosti 
   //             // "experienceToNextLevel": 69, //toto by nemuselo byt pri tomto api calle, mozno bude lepsie ak si nataham cely config co sa tyka experience/level/reward za level up 
-  //             "level": 1,
-
   //             "currentWins": 2, //toto je kolko ma vyhier do dalsieho darceku
   //             "winsNeededToNextGift": 6, //toto neviem ci je staticke, že kazdych 6 winov otvaras darceky alebo sa to stupnuje
-
   //             "tournamentWins": 420, //neviem co su tournamenty, su to celkove výhry?
   //             "tournamentLoses": 69,
-
-
   //             "selectedPFP": 2,  //obrazok profilu, asi idealne budu IDcka(int)
   //             "unlockedPFP": [1,2,3,69], //pole odomknutych
-
-  //             "boostAddTime": 2, //kolko ma boostov na pridanie casu
-  //             "boostHint": 2, //kolko ma boostov na napovedu
-
-  //             "hasFreeNickName" : true, //prva zmena nicku je zadarmenko
-  //             "hasADsRemoved" : false, //v premiume sa da kupit 
   //             //tasky
   //             "tasks": [{
   //                 "findXdifferences" : {
@@ -56,11 +41,6 @@ class UserService
   //                     "needToComplete": 5,
   //                     "reward": 10 //toto bude vzdy coins
   //                 },
-  //                 "tookRewardForConnectingAccount":{//ci si vybral task za registraciu/prepojenie uctu, ak nie bude zobrazeny task
-  //                     "progress": 0,
-  //                     "needToComplete": 1,
-  //                     "reward": 100 //toto bude vzdy coins
-  //                 } 
   //             }],
   //             "dailyRewards":[
   //                 {
@@ -103,7 +83,18 @@ class UserService
     // Combine the data
     $attributes['max_lives'] = $maxLives;
 
-    // Get the levelsFinished
+    // User boosters
+    $userBoosters = $user->userBoosters->mapWithKeys(function ($userBooster) {
+      return [$userBooster->booster->name => $userBooster->quantity];
+    });;
+
+    if ($userBoosters->isEmpty()) {
+      $attributes['boost_bonus_time'] = 0;
+      $attributes['boost_hint'] = 0;
+    } else {
+      $attributes['boost_bonus_time'] = $userBoosters['bonus_time'];
+      $attributes['boost_hint'] = $userBoosters['hint'];
+    }
 
     // Return the expected format
     return [

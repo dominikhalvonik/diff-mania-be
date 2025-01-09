@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('boosters', function (Blueprint $table) {
             $table->id();
 
-            $table->string('booster_type')->unique();
+            $table->string('name')->unique();
 
             $table->timestamps();
         });
