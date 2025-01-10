@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // \App\Models\User::factory(10)->create();
-        $this->call(PlayerAttributeDefinitionSeeder::class);
+        $this->call(UserAttributeDefinitionSeeder::class);
         $this->call(LevelsTableSeeder::class);
         $this->call(BoostersTableSeeder::class);
         $this->call(SettingsSeeder::class);

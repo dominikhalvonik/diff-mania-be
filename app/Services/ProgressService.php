@@ -10,7 +10,7 @@ class ProgressService
 {
   public function getProgress($user)
   {
-    $progress = $user->playerLevelProgress()->get();
+    $progress = $user->userLevelProgress()->get();
     $progress = $progress->groupBy('level_id');
 
     // Get all episodes with associated levels and cache it to redis
@@ -32,7 +32,7 @@ class ProgressService
 
     // If the user has progress data then return the episodes with the associated
     // levels and add an attribute to each level which will be named 'progress' and will have
-    // the value of progress from the PlayerLevelProgress model. If there are no progress data for a level then the progress will be 0.
+    // the value of progress from the UserLevelProgress model. If there are no progress data for a level then the progress will be 0.
     $episodes->each(function ($episode) use ($progress) {
       $episode->levels->each(function ($level) use ($progress) {
         $level->setAttribute('progress', $progress->get($level->id)?->first()?->progress ?? 0);

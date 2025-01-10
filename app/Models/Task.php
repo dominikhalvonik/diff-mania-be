@@ -10,7 +10,7 @@ class Task extends Model
 
     public function attribute()
     {
-        return $this->belongsTo(PlayerAttributeDefinition::class);
+        return $this->belongsTo(UserAttributeDefinition::class);
     }
 
     public function reward()

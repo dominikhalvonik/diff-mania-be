@@ -10,6 +10,6 @@ class Reward extends Model
 
     public function attribute()
     {
-        return $this->belongsTo(PlayerAttributeDefinition::class);
+        return $this->belongsTo(UserAttributeDefinition::class);
     }
 }

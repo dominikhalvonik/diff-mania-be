@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
-class PlayerProgressPage extends Controller
+class UserProgressPage extends Controller
 {
     /**
-     * Return the players episodes with associated levels.
+     * Return the users episodes with associated levels.
      */
     public function index(Request $request, ProgressService $progressService)
 

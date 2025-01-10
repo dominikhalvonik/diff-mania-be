@@ -38,13 +38,13 @@ class LevelController extends Controller
         ]);
 
         // Check if the achieved score is higher then the score allready achieved
-        $currentProgress = $user->playerLevelProgress()->where('level_id', $level->id)->first();
+        $currentProgress = $user->userLevelProgress()->where('level_id', $level->id)->first();
 
         if ($currentProgress && $currentProgress->progress >= $request->score) {
             return response()->json(['message' => 'Level allready finished with a higher score']);
         }
 
-        $user->playerLevelProgress()->updateOrCreate(
+        $user->userLevelProgress()->updateOrCreate(
             ['level_id' => $level->id],
             ['progress' => $request->score]
         );

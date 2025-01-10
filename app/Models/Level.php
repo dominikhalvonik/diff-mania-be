@@ -34,8 +34,8 @@ class Level extends Model
     }
 
     // Level has many level progress
-    public function playerLevelProgress()
+    public function userLevelProgress()
     {
-        return $this->hasMany(PlayerLevelProgress::class);
+        return $this->hasMany(UserLevelProgress::class);
     }
 }

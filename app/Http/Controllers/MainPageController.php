@@ -13,8 +13,8 @@ class MainPageController extends Controller
     {
         return response()->json([
             'user' => auth()->user()->only(['id', 'nickname', 'email']),
-            'attributes' => auth()->user()->playerAttributes->mapWithKeys(function ($attribute) {
-                return [$attribute->playerAttributeDefinition->name => $attribute->value];
+            'attributes' => auth()->user()->userAttributes->mapWithKeys(function ($attribute) {
+                return [$attribute->userAttributeDefinition->name => $attribute->value];
             }),
         ]);
     }

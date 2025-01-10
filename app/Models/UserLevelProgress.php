@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PlayerLevelProgress extends Model
+class UserLevelProgress extends Model
 {
     public function level()
     {

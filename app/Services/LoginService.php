@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Mail\VerifyEmail;
-use App\Models\PlayerAttribute;
-use App\Models\PlayerAttributeDefinition;
+use App\Models\UserAttribute;
+use App\Models\UserAttributeDefinition;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\UserSetting;
@@ -78,16 +78,16 @@ class LoginService
     }
 
     /**
-     * Create basic player attributes based on the attribute definitions with default values
+     * Create basic user attributes based on the attribute definitions with default values
      */
-    public function createBasicPlayerAttributes(User $newUser): void
+    public function createBasicUserAttributes(User $newUser): void
     {
-        $attributeDefinitions = PlayerAttributeDefinition::all();
+        $attributeDefinitions = UserAttributeDefinition::all();
 
         foreach ($attributeDefinitions as $definition) {
-            $newAttribute = new PlayerAttribute;
+            $newAttribute = new UserAttribute;
             $newAttribute->user_id = $newUser->id;
-            $newAttribute->player_attribute_definition_id = $definition->id;
+            $newAttribute->user_attribute_definition_id = $definition->id;
             $newAttribute->value = $definition->default_value;
             $newAttribute->save();
         }

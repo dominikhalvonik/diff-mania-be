@@ -56,23 +56,23 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the player attributes for the user. Loader eager for attribute definitions.
+     * Get the user attributes for the user. Loader eager for attribute definitions.
      */
-    public function playerAttributes()
+    public function userAttributes()
     {
-        return $this->hasMany(PlayerAttribute::class)->with('playerAttributeDefinition');
+        return $this->hasMany(UserAttribute::class)->with('userAttributeDefinition');
     }
 
     /**
-     * Get the player level progress for the user.
+     * Get the user level progress for the user.
      */
-    public function playerLevelProgress()
+    public function userLevelProgress()
     {
-        return $this->hasMany(PlayerLevelProgress::class);
+        return $this->hasMany(UserLevelProgress::class);
     }
 
     /**
-     * Player User Boosters
+     * User User Boosters
      */
     public function userBoosters()
     {
@@ -80,10 +80,10 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the level progress count - it is the count of progress from the playerLevelProgress.
+     * Get the level progress count - it is the count of progress from the userLevelProgress.
      */
     public function getLevelProgressCount(): int
     {
-        return $this->playerLevelProgress()->sum('progress');
+        return $this->userLevelProgress()->sum('progress');
     }
 }

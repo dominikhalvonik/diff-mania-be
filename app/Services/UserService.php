@@ -76,8 +76,8 @@ class UserService
     $maxLives = $config->max_lives;
 
     // Add the attributes
-    $attributes = $user->playerAttributes->mapWithKeys(function ($attribute) {
-      return [$attribute->playerAttributeDefinition->name => $attribute->value];
+    $attributes = $user->userAttributes->mapWithKeys(function ($attribute) {
+      return [$attribute->userAttributeDefinition->name => $attribute->value];
     });
 
     // Combine the data

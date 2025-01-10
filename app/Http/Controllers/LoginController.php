@@ -13,9 +13,7 @@ class LoginController extends Controller
     /**
      * Costructor with dependency injection of LoginService
      */
-    public function __construct(private LoginService $loginService)
-    {
-    }
+    public function __construct(private LoginService $loginService) {}
 
     public function register(Request $request): JsonResponse
     {
@@ -31,7 +29,7 @@ class LoginController extends Controller
         $token = $this->loginService->createToken($newUser, $request->device_name);
 
         // $this->loginService->sendVerificationEmail($newUser);
-        $this->loginService->createBasicPlayerAttributes($newUser);
+        $this->loginService->createBasicUserAttributes($newUser);
         $this->loginService->createUserSettings($newUser);
 
         return response()->json([
