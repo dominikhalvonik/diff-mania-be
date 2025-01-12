@@ -20,6 +20,9 @@ class DatabaseSeeder extends Seeder
         $this->call(GameConfigSeeder::class);
         $this->call(GameVersionSeeder::class);
         $this->call(LevelConfigSeeder::class);
+        $this->call(RewardSeeder::class);
+        $this->call(TaskSeeder::class);
+        $this->call(TaskConfigSeeder::class);
         // $this->call(LevelImageSeeder::class);
     }
 }

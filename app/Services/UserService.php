@@ -96,6 +96,9 @@ class UserService
       $attributes['boost_hint'] = $userBoosters['hint'];
     }
 
+    // User tasks
+    // Check if the user has any tasks and if not then create them from task-configs
+
     // Return the expected format
     return [
       'name' => $user->name,

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Cache;
 
 class ProgressService
 {
-  public function getProgress($user)
+  public function getEpisodesWithLevels($user)
   {
     $progress = $user->userLevelProgress()->get();
     $progress = $progress->groupBy('level_id');

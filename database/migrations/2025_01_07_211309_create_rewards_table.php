@@ -18,6 +18,9 @@ return new class extends Migration
             $table->integer('amount');
 
             $table->timestamps();
+
+            // Create a check to have the combination of user_attribute_definition_id and amount unique
+            $table->unique(['user_attribute_definition_id', 'amount']);
         });
     }
 
