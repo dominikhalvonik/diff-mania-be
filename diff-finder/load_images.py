@@ -22,18 +22,33 @@ def download_image(url: str, save_path: str) -> bool:
     if response.status_code == 200:
       if not os.path.exists(directory):
         os.makedirs(directory)
-        
       with open(save_path, 'wb') as f:
           f.write(response.content)
     else:
         print(f"Failed to download image from {url}")
         return False
     return True
+  
+def check_if_image_exists_on_server(image_path: str) -> bool:
+    response = requests.get(image_path)
+    return response.status_code == 200
 
 def main():
   # Download the images
-  download_image("http://laravel.test/images/1/1.png", "in/1/1.jpg")
-  download_image("http://laravel.test/images/1/2.png", "in/1/2.jpg")
+  for i in range(1, 16):
+    # Check if one file exists and if not try .jpg extension. If it does not exist at all jump to the next iteration
+    image_ending = "png"
+    if not check_if_image_exists_on_server(f"http://laravel.test/images/{i}/1.png"):
+      image_ending = "jpg"
+      if not check_if_image_exists_on_server(f"http://laravel.test/images/{i}/1.jpg"):
+        continue
+      
+    url1 = f"http://laravel.test/images/{i}/1.{image_ending}"
+    url2 = f"http://laravel.test/images/{i}/2.{image_ending}"
+    save_path1 = f"in/{i}/1.jpg"
+    save_path2 = f"in/{i}/2.jpg"
+    download_image(url1, save_path1)
+    download_image(url2, save_path2)
   
   # Load all paths to images recursively from the in folder
   images = []
@@ -45,7 +60,7 @@ def main():
   # Remove all images which have the name 3.png or 3.jpg or are in Original folder
   images = [image for image in images if '3.png' not in image and '3.jpg' not in image and 'Original' not in image]
   
-  print(images)  
+  print(images)
   
   # Loop Thorugh image pairs and compare them with the ImageCompare class
   comparer = ImageCompare()
