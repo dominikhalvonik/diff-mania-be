@@ -12,7 +12,7 @@ class UserController extends Controller
     public function loadUserData(Request $request, UserService $userService)
     {
         // Get the authenticated user
-        $baseUser = Auth::user();
+        $baseUser = User::find(Auth::id());
 
         if ($baseUser == null) {
             return response()->json([

@@ -10,15 +10,11 @@ class Level extends Model
     use HasFactory;
 
     protected $fillable = [
-        'level_name',
-        'unlock_stars',
-        'unlock_coins',
+        'reward_coins',
         'episode_id',
     ];
 
     protected $casts = [
-        'unlock_stars' => 'integer',
-        'unlock_coins' => 'integer',
         'episode_id' => 'integer',
     ];
 

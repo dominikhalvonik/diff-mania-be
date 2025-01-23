@@ -10,14 +10,14 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('level_configs', function (Blueprint $table) {
+        Schema::create('log', function (Blueprint $table) {
             $table->id();
 
-            $table->integer('level');
-            $table->integer('experience');
-            $table->integer('coin_reward');
+            $table->string('log_time')->default(NOW());
+            $table->string('user_id');
+            $table->string('log_info');
+            $table->integer('value')->nullable();
 
-            $table->timestamps();
         });
     }
 
@@ -26,6 +26,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('level_configs');
+        Schema::dropIfExists('log');
     }
 };

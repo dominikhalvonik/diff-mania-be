@@ -13,10 +13,15 @@ class LevelsTableSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create Episodes and save them to databases. Use the created episodes to create levels.
-        $episodes = Episode::factory(5)->create();
-        foreach ($episodes as $episode) {
-            Level::factory(5)->create(['episode_id' => $episode->id]);
+        for ($episodeNumber = 1; $episodeNumber <= 10; $episodeNumber++) {
+            $episode = Episode::find($episodeNumber);
+
+            for ($levelNumber = 1; $levelNumber <= 20; $levelNumber++) {
+                Level::create([
+                    'episode_id' => $episode->id,
+                    'reward_coins' => rand(100, 1000),
+                ]);
+            }
         }
     }
 }

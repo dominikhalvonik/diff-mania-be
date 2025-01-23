@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MainPageController;
@@ -17,7 +16,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/main', [MainPageController::class, 'index'])->name('main');
     Route::get('/progress', [UserProgressPageController::class, 'index'])->name('progress');
-    Route::get('/level/{id}', [LevelController::class, 'getLevelDataWithImages'])->name('level');
+    Route::get('/level/{level}', [LevelController::class, 'getLevelDataWithImages'])->name('level');
 
-    Route::post('level/{id}/finish', [LevelController::class, 'finishLevel'])->name('finish.level');
+    Route::post('/level/{level}/win', [LevelController::class, 'winLevel'])->name('win.level');
 });

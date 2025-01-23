@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\LevelImage;
+use App\Services\ExperienceService;
+use App\Models\LogTable;
 use Illuminate\Http\Request;
 use App\Models\Level;
 use App\Models\Image;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class LevelController extends Controller
 {
@@ -29,7 +32,7 @@ class LevelController extends Controller
         return response()->json($imageInformations);
     }
 
-    public function finishLevel(Request $request, Level $level)
+    public function winLevel(Request $request, Level $level, ExperienceService $experienceService)
     {
         $user = $request->user();
 
@@ -49,6 +52,18 @@ class LevelController extends Controller
             ['progress' => $request->score]
         );
 
-        return response()->json(['message' => 'Level finished']);
+        // TODO: Find from DB
+        $experienceGained = 500;
+
+        LogTable::create([
+            'user_id' => $user->id,
+            'log_info' => 'Finished level ' . $level->id . ' with score ' . $request->score
+        ]);
+
+        $result = $experienceService->actualizeExperience($user, $experienceGained);
+
+        return response()->json(['message' => 'Level finished', ...$result]);
     }
+
+
 }

@@ -86,7 +86,8 @@ class UserService
     // User boosters
     $userBoosters = $user->userBoosters->mapWithKeys(function ($userBooster) {
       return [$userBooster->booster->name => $userBooster->quantity];
-    });;
+    });
+    ;
 
     if ($userBoosters->isEmpty()) {
       $attributes['boost_bonus_time'] = 0;

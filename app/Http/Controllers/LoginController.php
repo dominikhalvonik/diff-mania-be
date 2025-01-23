@@ -7,13 +7,16 @@ use App\Services\LoginService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Models\LogTable;
 
 class LoginController extends Controller
 {
     /**
      * Costructor with dependency injection of LoginService
      */
-    public function __construct(private LoginService $loginService) {}
+    public function __construct(private LoginService $loginService)
+    {
+    }
 
     public function register(Request $request): JsonResponse
     {
@@ -31,6 +34,11 @@ class LoginController extends Controller
         // $this->loginService->sendVerificationEmail($newUser);
         $this->loginService->createBasicUserAttributes($newUser);
         $this->loginService->createUserSettings($newUser);
+
+        LogTable::create([
+            'user_id' => $newUser->id,
+            'log_info' => 'registered'
+        ]);
 
         return response()->json([
             'success' => true,
@@ -58,9 +66,14 @@ class LoginController extends Controller
 
         $token = $this->loginService->createToken($user, $request->device_name);
 
+        LogTable::create([
+            'user_id' => $user->id,
+            'log_info' => 'logged in'
+        ]);
+
         return response()->json([
             'success' => true,
-            'message' => 'User registered successfully',
+            'message' => 'User logged in successfully',
             'token' => $token,
         ]);
     }

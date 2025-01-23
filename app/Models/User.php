@@ -14,6 +14,12 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, HasUuids, Notifiable, SoftDeletes;
 
+    // Attribute Definition helpters
+    public const LEVEL = 1;
+    public const EXPERIENCE = 2;
+    public const COINS = 3;
+    public const LIVES = 4;
+
     protected $keyType = 'string';
 
     public $incrementing = false;
