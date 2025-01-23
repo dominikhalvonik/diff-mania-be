@@ -97,6 +97,9 @@ class UserService
       $attributes['boost_hint'] = $userBoosters['hint'];
     }
 
+    // Check Daily rewards
+
+
     // User tasks
     // Check if the user has any tasks and if not then create them from task-configs
 

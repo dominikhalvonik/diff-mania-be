@@ -94,4 +94,9 @@ class User extends Authenticatable
     {
         return $this->userLevelProgress()->sum('progress');
     }
+
+    public function dailyRewards()
+    {
+        return $this->hasOne(DailyReward::class);
+    }
 }
