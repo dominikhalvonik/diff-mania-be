@@ -19,7 +19,7 @@ class GameConfigSeeder extends Seeder
             'value' => json_encode([
                 'name' => 'Difference Mania',
                 'max_lives' => 5,
-                'lives_refill_time' => 5,
+                'lives_refill_time' => 120,
             ])
         ]);
     }
