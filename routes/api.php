@@ -19,4 +19,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/level/{level}', [LevelController::class, 'getLevelDataWithImages'])->name('level');
 
     Route::post('/level/{level}/win', [LevelController::class, 'winLevel'])->name('win.level');
+    Route::post('/level/{level}/loss', [LevelController::class, 'lossLevel'])->name('loss.level');
 });

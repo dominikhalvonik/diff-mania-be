@@ -10,6 +10,7 @@ use App\Models\Level;
 use App\Models\Image;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use App\Models\User;
 
 class LevelController extends Controller
 {
@@ -65,5 +66,33 @@ class LevelController extends Controller
         return response()->json(['message' => 'Level finished', ...$result]);
     }
 
+    public function lossLevel(Request $request, Level $level)
+    {
+        // If a player looses a level remove one of his lives (if he has more then 0) and setup the timer for lives regeneration - log it in log table
+        $user = $request->user();
 
+        $user->load('userAttributes');
+
+        $lives = $user->userAttributes()->where('user_attribute_definition_id', User::LIVES)->first()->value;
+        if ($lives === 0) {
+            return response()->json(['message' => 'No lives left', 'lives' => $lives]);
+        }
+
+        $lives -= 1;
+
+        $user->userAttributes()->where('user_attribute_definition_id', User::LIVES)->update(['value' => $lives]);
+
+        // Check if the last refill timer is set
+        $lastRefillTimer = $user->userAttributes->where('user_attribute_definition_id', User::LAST_REFILL_TIMER)->first();
+        if ($lastRefillTimer && $lastRefillTimer->value === 0) {
+            $user->userAttributes()->where('user_attribute_definition_id', User::LAST_REFILL_TIMER)->update(['value' => time()]);
+        }
+
+        LogTable::create([
+            'user_id' => $user->id,
+            'log_info' => 'Lost level ' . $level->id
+        ]);
+
+        return response()->json(['message' => 'Level lost', 'lives' => $lives]);
+    }
 }

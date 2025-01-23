@@ -20,6 +20,8 @@ class User extends Authenticatable
     public const COINS = 3;
     public const LIVES = 4;
 
+    public const LAST_REFILL_TIMER = 6;
+
     protected $keyType = 'string';
 
     public $incrementing = false;
