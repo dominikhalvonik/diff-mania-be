@@ -89,6 +89,9 @@ class LoginService
             $newAttribute->user_id = $newUser->id;
             $newAttribute->user_attribute_definition_id = $definition->id;
             $newAttribute->value = $definition->default_value;
+            if ($definition->id === User::LAST_LOGIN_DATE) {
+                $newAttribute->value = time();
+            }
             $newAttribute->save();
         }
     }

@@ -22,6 +22,8 @@ class User extends Authenticatable
 
     public const LAST_REFILL_TIMER = 6;
 
+    public const LAST_LOGIN_DATE = 9;
+
     protected $keyType = 'string';
 
     public $incrementing = false;

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DailyRewardController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MainPageController;
@@ -20,4 +21,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/level/{level}/win', [LevelController::class, 'winLevel'])->name('win.level');
     Route::post('/level/{level}/loss', [LevelController::class, 'lossLevel'])->name('loss.level');
+
+    Route::post('/daily_reward/{day}/claim', [DailyRewardController::class, 'claimReward'])->name('daily_reward.claim');
 });

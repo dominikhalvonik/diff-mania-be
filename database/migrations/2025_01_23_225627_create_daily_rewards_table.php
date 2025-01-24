@@ -13,9 +13,10 @@ return new class extends Migration {
         Schema::create('daily_rewards', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignUuid(column: 'user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
+            $table->integer('day')->default(0);
+            $table->boolean('opened')->default(false);
 
-            $table->integer('active_days')->default(0);
 
             $table->timestamps();
         });
