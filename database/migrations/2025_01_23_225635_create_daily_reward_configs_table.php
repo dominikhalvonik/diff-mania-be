@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
 
             $table->integer('day')->unique();
-            $table->integer('reward')->default(0);
+            $table->integer('reward_coins')->default(0);
 
             $table->timestamps();
         });

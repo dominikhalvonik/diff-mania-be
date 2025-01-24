@@ -15,13 +15,13 @@ class DailyRewardConfigSeeder extends Seeder
     {
 
         $rewards = [
-            ['day' => 1, 'coins' => 3],
-            ['day' => 2, 'coins' => 5],
-            ['day' => 3, 'coins' => 7],
-            ['day' => 4, 'coins' => 10],
-            ['day' => 5, 'coins' => 15],
-            ['day' => 6, 'coins' => 20],
-            ['day' => 7, 'coins' => 30],
+            ['day' => 1, 'reward_coins' => 3],
+            ['day' => 2, 'reward_coins' => 5],
+            ['day' => 3, 'reward_coins' => 7],
+            ['day' => 4, 'reward_coins' => 10],
+            ['day' => 5, 'reward_coins' => 15],
+            ['day' => 6, 'reward_coins' => 20],
+            ['day' => 7, 'reward_coins' => 30],
         ];
 
         DailyRewardConfig::insert($rewards);
