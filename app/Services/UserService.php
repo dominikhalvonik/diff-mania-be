@@ -110,7 +110,8 @@ class UserService
       'name' => $user->name,
       'email' => $user->email,
       'nickname' => $user->nickname,
-      'level_count' => $user->getLevelProgressCount(),
+      'user_score' => $user->getUserScoreCount(),
+      'finished_levels' => $user->userLevelProgress->count(),
       ...$attributes,
       ...$dailyReward
     ];

@@ -92,7 +92,7 @@ class User extends Authenticatable
     /**
      * Get the level progress count - it is the count of progress from the userLevelProgress.
      */
-    public function getLevelProgressCount(): int
+    public function getUserScoreCount(): int
     {
         return $this->userLevelProgress()->sum('progress');
     }
