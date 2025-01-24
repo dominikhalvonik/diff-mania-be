@@ -7,12 +7,13 @@ use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 
 use App\Services\DailyRewardService;
+use App\Services\LifeRefillService;
 
 class UserService
 {
 
 
-  public function __construct(private readonly DailyRewardService $dailyRewardService)
+  public function __construct(private readonly DailyRewardService $dailyRewardService, private readonly LifeRefillService $lifeRefillService)
   {
   }
 
@@ -62,12 +63,9 @@ class UserService
   //         }
   public function loadInitData(User $user)
   {
-    // Get the config
-    $config = Cache::remember(GameConfig::CORE_CONFIG, 60, function () {
-      return GameConfig::where('name', GameConfig::CORE_CONFIG)->first();
-    });
-    $config = json_decode($config->value);
-    $maxLives = $config->max_lives;
+
+    // Check Life status
+    $lifeStatus = $this->lifeRefillService->checkAndRefill($user);
 
     // Add the attributes
     $attributes = $user->userAttributes->mapWithKeys(function ($attribute) {
@@ -75,7 +73,9 @@ class UserService
     });
 
     // Combine the data
-    $attributes['max_lives'] = $maxLives;
+    $attributes['max_lives'] = $lifeStatus['max_lives'];
+    $attributes['lives'] = $lifeStatus['lives'];
+    $attributes['life_refill_time'] = $lifeStatus['life_refill_time'];
 
     // User boosters
     $userBoosters = $user->userBoosters->mapWithKeys(function ($userBooster) {
@@ -95,6 +95,10 @@ class UserService
 
     // User tasks
     // Check if the user has any tasks and if not then create them from task-configs
+
+
+    // Remove last_login from attributes
+    unset($attributes['last_login']);
 
     // Return the expected format
     return [
