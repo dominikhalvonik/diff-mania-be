@@ -13,15 +13,16 @@ class UserService
 {
 
 
-  public function __construct(private readonly DailyRewardService $dailyRewardService, private readonly LifeRefillService $lifeRefillService)
-  {
+  public function __construct(
+    private readonly DailyRewardService $dailyRewardService,
+    private readonly LifeRefillService $lifeRefillService,
+    private readonly ExperienceService $experienceService
+  ) {
   }
 
   // Just to not forget what I do not return and should
   //     {
   //       {
-  //             "timeForRefillLife": 200, 
-  //             // "experienceToNextLevel": 69, //toto by nemuselo byt pri tomto api calle, mozno bude lepsie ak si nataham cely config co sa tyka experience/level/reward za level up 
   //             "currentWins": 2, //toto je kolko ma vyhier do dalsieho darceku
   //             "winsNeededToNextGift": 6, //toto neviem ci je staticke, že kazdych 6 winov otvaras darceky alebo sa to stupnuje
   //             "selectedPFP": 2,  //obrazok profilu, asi idealne budu IDcka(int)
@@ -93,11 +94,15 @@ class UserService
     // Daily rewards calculator
     $dailyReward = $this->dailyRewardService->getDailyRewards($user);
 
+    // Experience
+    $experienceToNextLevel = $this->experienceService->calculateExperienceForNextLevel($user);
+    $attributes['experience_to_next_level'] = $experienceToNextLevel;
+
     // User tasks
     // Check if the user has any tasks and if not then create them from task-configs
 
 
-    // Remove last_login from attributes
+    // Remove unused attributes
     unset($attributes['last_login']);
 
     // Return the expected format

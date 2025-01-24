@@ -13,11 +13,12 @@ class ExperienceService
 {
 
   private const TEN_DAYS = 60 * 24 * 10;
+  private const LEVEL_UP_CONFIG = 'level_up_config';
 
   public function actualizeExperience(User $user, int $experienceGained)
   {
     // Check if the user has leveled up
-    $levelUpConfig = Cache::remember('level_up_config', self::TEN_DAYS, function () {
+    $levelUpConfig = Cache::remember($this::LEVEL_UP_CONFIG, self::TEN_DAYS, function () {
       return LevelConfig::pluck('experience', 'level')->toArray();
     });
 
@@ -79,5 +80,25 @@ class ExperienceService
       return LevelConfig::pluck('coin_reward', 'level')->toArray();
     });
     return $rewardsConfig[$level + 1] ?? [];
+  }
+
+  public function calculateExperienceForNextLevel(User $user)
+  {
+    $levelUpConfig = Cache::remember($this::LEVEL_UP_CONFIG, self::TEN_DAYS, function () {
+      return LevelConfig::pluck('experience', 'level')->toArray();
+    });
+
+    $user->load('userAttributes');
+
+    $currentLevel = $user->userAttributes->where('user_attribute_definition_id', User::LEVEL)->first()->value;
+    $userExperienceAttribute = $user->userAttributes->where('user_attribute_definition_id', User::EXPERIENCE)->first()->value;
+
+    $nextLevelExperience = $levelUpConfig[$currentLevel + 1] ?? null;
+
+    if ($nextLevelExperience) {
+      return $nextLevelExperience - $userExperienceAttribute;
+    }
+
+    return 0;
   }
 }
