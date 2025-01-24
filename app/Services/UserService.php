@@ -18,8 +18,6 @@ class UserService
   //             // "experienceToNextLevel": 69, //toto by nemuselo byt pri tomto api calle, mozno bude lepsie ak si nataham cely config co sa tyka experience/level/reward za level up 
   //             "currentWins": 2, //toto je kolko ma vyhier do dalsieho darceku
   //             "winsNeededToNextGift": 6, //toto neviem ci je staticke, že kazdych 6 winov otvaras darceky alebo sa to stupnuje
-  //             "tournamentWins": 420, //neviem co su tournamenty, su to celkove výhry?
-  //             "tournamentLoses": 69,
   //             "selectedPFP": 2,  //obrazok profilu, asi idealne budu IDcka(int)
   //             "unlockedPFP": [1,2,3,69], //pole odomknutych
   //             //tasky
@@ -45,18 +43,6 @@ class UserService
   //                     "reward": 10 //toto bude vzdy coins
   //                 },
   //             }],
-  //             "dailyRewards":[
-  //                 {
-  //                     "day": 1,
-  //                     "reward": 1,
-  //                     "opened": true // ak je true tak sa neda otvorit, sluzi iba na ukazanie historie daily rewardov
-  //                 },
-  //                 {
-  //                     "day": 2,
-  //                     "reward": 2,
-  //                     "opened": false // tento sa da otvorit
-  //                 }
-  //             ],
   //             //collection
   //             "collection": [{
   //                 "id": 1,
