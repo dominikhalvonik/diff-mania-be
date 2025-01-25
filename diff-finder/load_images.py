@@ -50,11 +50,11 @@ def main():
   results = mycursor.fetchall()
   
   # Change the 0-th index of results array to integer and sort the array desceding then get the first element
-  result = sorted(results, key=lambda x: int(x[0]), reverse=True)[0]
   
   last_image_id = 0
 
-  if result is not None:
+  if len(results) > 0:
+    result = sorted(results, key=lambda x: int(x[0]), reverse=True)[0]
     last_image_id = result[0]
     last_image_id = int(last_image_id)
   else:
@@ -64,7 +64,7 @@ def main():
     print("All images are already in the database.")
     return
 
-  for i in range(last_image_id, image_count + 1):
+  for i in range(last_image_id + 1, image_count + 1):
     # Check if one file exists and if not try .jpg extension. If it does not exist at all jump to the next iteration
     image_ending = "png"
     if not check_if_image_exists_on_server(f"{back_end_enpoint}/images/{i}/1.png"):
@@ -92,7 +92,7 @@ def main():
   # Loop Thorugh image pairs and compare them with the ImageCompare class
   comparer = ImageCompare()
   
-  for i in range(0, len(images), 2):
+  for i in range(last_image_id + 1, len(images), 2):
     image1_path = images[i + 1]
     image2_path = images[i]
     

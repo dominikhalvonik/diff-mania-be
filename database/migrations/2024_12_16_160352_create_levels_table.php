@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
 
             $table->foreignId('episode_id')->constrained()->onDelete('cascade');
+            $table->integer('name');
             $table->integer('reward_coins');
 
             $table->timestamps();
