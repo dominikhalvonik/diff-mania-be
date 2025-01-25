@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('path');
             $table->integer('differences');
             $table->longText('json_diff');
+            $table->integer('difficulty');
 
             $table->timestamps();
         });

@@ -6,10 +6,12 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MainPageController;
 use App\Http\Controllers\UserProgressPageController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ImageController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [LoginController::class, 'register'])->name('register');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::get('/images/count', [ImageController::class, 'count'])->name('images.count');
 
 
 Route::middleware('auth:sanctum')->group(function () {
