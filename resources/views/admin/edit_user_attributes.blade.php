@@ -1,5 +1,9 @@
 @extends('admin.layout')
 
+@section('title', 'Edit User Attributes')
+
+@section('header', 'Edit User Attributes')
+
 @section('content')
 <div class="container">
   <h1>Edit User Attributes for {{ $user->name }}</h1>
