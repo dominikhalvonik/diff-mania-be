@@ -10,6 +10,8 @@ use Carbon\Carbon;
 use App\Models\AdminLogTable;
 use App\Models\UserAttribute;
 use App\Models\UserAttributeDefinition;
+use App\Models\Booster;
+use App\Models\UserBooster;
 
 class AdminController extends Controller
 {
@@ -96,5 +98,28 @@ class AdminController extends Controller
         }
 
         return redirect()->route('admin.users')->with('success', 'User attributes updated successfully.');
+    }
+
+    public function editUserBoosters($userId)
+    {
+        $user = User::findOrFail($userId);
+        $boosters = Booster::all();
+        $userBoosters = UserBooster::where('user_id', $userId)->get();
+
+        return view('admin.edit_user_boosters', compact('user', 'boosters', 'userBoosters'));
+    }
+
+    public function updateUserBoosters(Request $request, $userId)
+    {
+        $user = User::findOrFail($userId);
+        $boosters = $request->input('boosters');
+
+        foreach ($boosters as $boosterId => $amount) {
+            $userBooster = UserBooster::firstOrNew(['user_id' => $userId, 'booster_id' => $boosterId]);
+            $userBooster->quantity = $amount;
+            $userBooster->save();
+        }
+
+        return redirect()->route('admin.users')->with('success', 'User boosters updated successfully.');
     }
 }

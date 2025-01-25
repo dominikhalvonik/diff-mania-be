@@ -21,6 +21,8 @@ Route::middleware(['auth:sanctum', AdminMiddleware::class])->group(function () {
 
     Route::get('/admin/users/{user}/edit', [AdminController::class, 'editUserAttributes'])->name('admin.edit_user_attributes');
     Route::put('/admin/users/{user}/update', [AdminController::class, 'updateUserAttributes'])->name('admin.update_user_attributes');
+    Route::get('/admin/users/{user}/boosters/edit', [AdminController::class, 'editUserBoosters'])->name('admin.edit_user_boosters');
+    Route::put('/admin/users/{user}/boosters/update', [AdminController::class, 'updateUserBoosters'])->name('admin.update_user_boosters');
 
     Route::post('/booster/{booster}/add', [BoosterController::class, 'addBooster'])->name('booster.add');
 });

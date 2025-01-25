@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,16 +16,19 @@
       flex-direction: column;
       min-height: 100vh;
     }
+
     header {
       background-color: #333;
       color: #fff;
       padding: 20px;
       text-align: center;
     }
+
     nav {
       background-color: #444;
       padding: 10px;
     }
+
     nav ul {
       list-style: none;
       padding: 0;
@@ -32,17 +36,21 @@
       display: flex;
       justify-content: center;
     }
+
     nav ul li {
       margin: 0 15px;
     }
+
     nav ul li a {
       color: #fff;
       text-decoration: none;
       transition: color 0.3s;
     }
+
     nav ul li a:hover {
       color: #ddd;
     }
+
     .content {
       flex: 1;
       padding: 20px;
@@ -51,19 +59,18 @@
       margin: 20px;
       border-radius: 8px;
     }
+
     footer {
       background-color: #333;
       color: #fff;
       text-align: center;
       padding: 10px;
-      position: relative;
-      bottom: 0;
-      width: 100%;
     }
   </style>
   @yield('styles')
   @yield('scripts')
 </head>
+
 <body>
   <header>
     <h1>@yield('header')</h1>
@@ -82,4 +89,5 @@
   </footer>
   @yield('chart-scripts')
 </body>
+
 </html>

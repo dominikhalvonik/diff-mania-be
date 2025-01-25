@@ -93,8 +93,11 @@
             <td>{{ $user->email }}</td>
             <td>{{ $user->nickname }}</td>
             <td>
-                <form method="GET" action="{{ route('admin.edit_user_attributes', ['user' => $user->id]) }}">
-                    <button type="submit">Edit</button>
+                <form method="GET" action="{{ route('admin.edit_user_attributes', ['user' => $user->id]) }}" style="display:inline;">
+                    <button type="submit">Edit Attributes</button>
+                </form>
+                <form method="GET" action="{{ route('admin.edit_user_boosters', ['user' => $user->id]) }}" style="display:inline;">
+                    <button type="submit">Edit Boosters</button>
                 </form>
             </td>
         </tr>

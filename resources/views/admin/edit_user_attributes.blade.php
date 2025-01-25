@@ -5,15 +5,16 @@
 @section('header', 'Edit User Attributes')
 
 @section('content')
+
 <div class="container">
-  <h1>Edit User Attributes for {{ $user->name }}</h1>
+  <h1 class="my-4">Edit User Attributes for {{ $user->name }}</h1>
 
   <form action="{{ route('admin.update_user_attributes', $user->id) }}" method="POST">
     @csrf
     @method('PUT')
 
-    <table class="table">
-      <thead>
+    <table class="table table-striped table-bordered">
+      <thead class="thead-dark">
         <tr>
           <th>Attribute Name</th>
           <th>Description</th>
@@ -36,7 +37,10 @@
       </tbody>
     </table>
 
-    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <div class="d-flex justify-content-between mt-4">
+      <button type="submit" class="btn btn-primary">Save Changes</button>
+      <a href="{{ route('admin.users') }}" class="btn btn-secondary">Back</a>
+    </div>
   </form>
 </div>
 @endsection
