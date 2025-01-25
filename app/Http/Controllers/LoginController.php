@@ -8,15 +8,15 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\LogTable;
+use Illuminate\Validation\ValidationException;
+use App\Models\Ban;
 
 class LoginController extends Controller
 {
     /**
      * Costructor with dependency injection of LoginService
      */
-    public function __construct(private LoginService $loginService)
-    {
-    }
+    public function __construct(private LoginService $loginService) {}
 
     public function register(Request $request): JsonResponse
     {
@@ -56,6 +56,14 @@ class LoginController extends Controller
         ]);
 
         $user = User::where('email', $request->email)->first();
+
+        if ($user && Ban::where('user_id', $user->id)->exists()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User is banned.',
+                'reason' => Ban::where('user_id', $user->id)->first()->reason,
+            ]);
+        }
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([

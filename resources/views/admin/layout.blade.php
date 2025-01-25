@@ -79,6 +79,7 @@
     <ul>
       <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
       <li><a href="{{ route('admin.users') }}">Users</a></li>
+      <li><a href="{{ route('admin.banned_users') }}">Banned Users</a></li>
     </ul>
   </nav>
   <div class="content">

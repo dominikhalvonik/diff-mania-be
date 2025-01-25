@@ -12,6 +12,7 @@ use App\Models\UserAttribute;
 use App\Models\UserAttributeDefinition;
 use App\Models\Booster;
 use App\Models\UserBooster;
+use App\Models\Ban;
 
 class AdminController extends Controller
 {
@@ -121,5 +122,39 @@ class AdminController extends Controller
         }
 
         return redirect()->route('admin.users')->with('success', 'User boosters updated successfully.');
+    }
+
+    public function banUser($userId)
+    {
+        $user = User::findOrFail($userId);
+        return view('admin.ban_user', compact('user'));
+    }
+
+    public function storeBan(Request $request, $userId)
+    {
+        $user = User::findOrFail($userId);
+
+        Ban::create([
+            'user_id' => $userId,
+            'banned_by' => Auth::id(),
+            'reason' => $request->input('reason'),
+            'banned_at' => Carbon::now(),
+        ]);
+
+        return redirect()->route('admin.users')->with('success', 'User banned successfully.');
+    }
+
+    public function bannedUsers()
+    {
+        $bannedUsers = Ban::with('user')->get();
+        return view('admin.banned_users', compact('bannedUsers'));
+    }
+
+    public function unbanUser($userId)
+    {
+        $ban = Ban::where('user_id', $userId)->firstOrFail();
+        $ban->delete();
+
+        return redirect()->route('admin.banned_users')->with('success', 'User unbanned successfully.');
     }
 }

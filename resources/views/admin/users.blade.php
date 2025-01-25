@@ -99,6 +99,9 @@
                 <form method="GET" action="{{ route('admin.edit_user_boosters', ['user' => $user->id]) }}" style="display:inline;">
                     <button type="submit">Edit Boosters</button>
                 </form>
+                <form method="GET" action="{{ route('admin.ban_user', ['user' => $user->id]) }}" style="display:inline;">
+                    <button type="submit">Ban</button>
+                </form>
             </td>
         </tr>
         @endforeach

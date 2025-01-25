@@ -24,5 +24,10 @@ Route::middleware(['auth:sanctum', AdminMiddleware::class])->group(function () {
     Route::get('/admin/users/{user}/boosters/edit', [AdminController::class, 'editUserBoosters'])->name('admin.edit_user_boosters');
     Route::put('/admin/users/{user}/boosters/update', [AdminController::class, 'updateUserBoosters'])->name('admin.update_user_boosters');
 
+    Route::get('/admin/users/{user}/ban', [AdminController::class, 'banUser'])->name('admin.ban_user');
+    Route::post('/admin/users/{user}/ban', [AdminController::class, 'storeBan'])->name('admin.store_ban');
+    Route::delete('/admin/users/{user}/unban', [AdminController::class, 'unbanUser'])->name('admin.unban_user');
+    Route::get('/admin/banned-users', [AdminController::class, 'bannedUsers'])->name('admin.banned_users');
+
     Route::post('/booster/{booster}/add', [BoosterController::class, 'addBooster'])->name('booster.add');
 });
