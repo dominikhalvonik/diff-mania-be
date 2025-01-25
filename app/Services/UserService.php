@@ -87,8 +87,8 @@ class UserService
       $attributes['boost_bonus_time'] = 0;
       $attributes['boost_hint'] = 0;
     } else {
-      $attributes['boost_bonus_time'] = $userBoosters['bonus_time'];
-      $attributes['boost_hint'] = $userBoosters['hint'];
+      $attributes['boost_bonus_time'] = $userBoosters['bonus_time'] ?? 0;
+      $attributes['boost_hint'] = $userBoosters['hint'] ?? 0;
     }
 
     // Daily rewards calculator

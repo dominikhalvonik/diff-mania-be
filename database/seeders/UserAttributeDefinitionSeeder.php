@@ -17,7 +17,7 @@ class UserAttributeDefinitionSeeder extends Seeder
         $attributes = [
             ['name' => 'level', 'description' => 'User level', 'default_value' => 1],
             ['name' => 'experience', 'description' => 'User experience', 'default_value' => 0],
-            ['name' => 'coins', 'description' => 'User coins', 'default_value' => 100],
+            ['name' => 'coins', 'description' => 'User coins', 'default_value' => 50],
             ['name' => 'lives', 'description' => 'User lives', 'default_value' => 5],
             ['name' => 'has_ads_removed', 'description' => 'The user has bought the adremover offer', 'default_value' => 0],
             ['name' => 'last_refill_timestamp', 'description' => 'The last time lives were refilled', 'default_value' => 0],

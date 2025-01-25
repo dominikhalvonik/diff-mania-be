@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BoosterController;
 use App\Http\Controllers\DailyRewardController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\LoginController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\MainPageController;
 use App\Http\Controllers\UserProgressPageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ImageController;
+use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [LoginController::class, 'register'])->name('register');
@@ -25,4 +27,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/level/{level}/loss', [LevelController::class, 'lossLevel'])->name('loss.level');
 
     Route::post('/daily_reward/{day}/claim', [DailyRewardController::class, 'claimReward'])->name('daily_reward.claim');
+
+    Route::post('/booster/{booster}/use', [BoosterController::class, 'useBooster'])->name('booster.use');
+
+});
+
+
+Route::middleware(['auth:sanctum', AdminMiddleware::class])->group(function () {
+    Route::post('/booster/{booster}/add', [BoosterController::class, 'addBooster'])->name('booster.add');
 });

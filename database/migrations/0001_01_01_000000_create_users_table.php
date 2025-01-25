@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -20,7 +19,9 @@ return new class extends Migration
             $table->string('nickname');
             $table->string('profile_image_url')->nullable();
             $table->boolean('is_email_enabled');
+            $table->boolean('is_admin')->default(false);
             $table->rememberToken();
+
             $table->timestamps();
             $table->softDeletes();
         });
