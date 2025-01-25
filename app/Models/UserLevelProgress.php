@@ -13,7 +13,7 @@ class UserLevelProgress extends Model
         'stars_collected',
         'completed',
         'points_achieved',
-        'images_done',
+        'finished_image_names',
     ];
 
     public function level()

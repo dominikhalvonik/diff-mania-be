@@ -11,6 +11,7 @@ use App\Models\Image;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class LevelController extends Controller
 {
@@ -51,15 +52,24 @@ class LevelController extends Controller
         DB::transaction(function () use ($user, $level, $request) {
             $actualStars = $user->userLevelProgress()->where('level_id', $level->id)->first()->stars_collected ?? 0;
             $actualPoints = $user->userLevelProgress()->where('level_id', $level->id)->first()->points_achieved ?? 0;
-            $actualImagesDone = $user->userLevelProgress()->where('level_id', $level->id)->first()->images_done ?? 0;
+            $actualImagesDone = $user->userLevelProgress()->where('level_id', $level->id)->first()->finished_image_names ?? '[]';
+            $parsedImagesDone = json_decode($actualImagesDone, true);
+
+            $finishedImages = array_unique(array_merge($parsedImagesDone, $request->images_finished));
+
+            $encodedFinishedImages = json_encode($finishedImages);
+            Log::info(json_encode($encodedFinishedImages));
 
             $user->userLevelProgress()->updateOrCreate(
-                ['level_id' => $level->id],
+                [
+                    'user_id' => $user->id,
+                    'level_id' => $level->id,
+                ],
                 [
                     'stars_collected' => $actualStars > $request->stars_collected ? $actualStars : $request->stars_collected,
                     'completed' => true,
                     'points_achieved' => $actualPoints > $request->score ? $actualPoints : $request->score,
-                    'images_done' => $actualImagesDone > $request->images_done ? $actualImagesDone : $request->images_done
+                    'finished_image_names' => (string) $encodedFinishedImages,
                 ]
             );
         });
