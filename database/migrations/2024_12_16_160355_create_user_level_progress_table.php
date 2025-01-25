@@ -15,7 +15,10 @@ return new class extends Migration {
 
             $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('level_id')->constrained()->cascadeOnDelete();
-            $table->smallInteger('progress')->default(0);
+            $table->smallInteger('stars_collected')->default(0);
+            $table->boolean('completed')->default(false);
+            $table->integer('points_achieved')->default(0);
+            $table->integer('images_done')->default(0);
 
             $table->timestamps();
         });

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Level;
 use App\Models\Image;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use App\Models\User;
 
 class LevelController extends Controller
@@ -38,27 +38,38 @@ class LevelController extends Controller
         $user = $request->user();
 
         $request->validate([
-            'score' => 'required|integer|min:0|max:3'
+            'stars_collected' => 'required|integer|min:0|max:3'
         ]);
 
-        // Check if the achieved score is higher then the score allready achieved
+        // Check if the achieved stars_collected is higher then the stars_collected allready achieved
         $currentProgress = $user->userLevelProgress()->where('level_id', $level->id)->first();
 
-        if ($currentProgress && $currentProgress->progress >= $request->score) {
-            return response()->json(['message' => 'Level allready finished with a higher score']);
+        if ($currentProgress && $currentProgress->stars_collected >= $request->stars_collected) {
+            return response()->json(['message' => 'Level allready finished with more stars']);
         }
 
-        $user->userLevelProgress()->updateOrCreate(
-            ['level_id' => $level->id],
-            ['progress' => $request->score]
-        );
+        DB::transaction(function () use ($user, $level, $request) {
+            $actualStars = $user->userLevelProgress()->where('level_id', $level->id)->first()->stars_collected ?? 0;
+            $actualPoints = $user->userLevelProgress()->where('level_id', $level->id)->first()->points_achieved ?? 0;
+            $actualImagesDone = $user->userLevelProgress()->where('level_id', $level->id)->first()->images_done ?? 0;
+
+            $user->userLevelProgress()->updateOrCreate(
+                ['level_id' => $level->id],
+                [
+                    'stars_collected' => $actualStars > $request->stars_collected ? $actualStars : $request->stars_collected,
+                    'completed' => true,
+                    'points_achieved' => $actualPoints > $request->score ? $actualPoints : $request->score,
+                    'images_done' => $actualImagesDone > $request->images_done ? $actualImagesDone : $request->images_done
+                ]
+            );
+        });
 
         // TODO: Find from DB
-        $experienceGained = 500;
+        $experienceGained = 100;
 
         LogTable::create([
             'user_id' => $user->id,
-            'log_info' => 'Finished level ' . $level->id . ' with score ' . $request->score
+            'log_info' => 'Finished level ' . $level->id . ' with stars collected ' . $request->score
         ]);
 
         $result = $experienceService->actualizeExperience($user, $experienceGained);

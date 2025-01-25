@@ -90,11 +90,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the level progress count - it is the count of progress from the userLevelProgress.
+     * Get the level stars_collected count - it is the count of stars_collected from the userLevelProgress.
      */
-    public function getUserScoreCount(): int
+    public function getUserStarsCollectedCount(): int
     {
-        return $this->userLevelProgress()->sum('progress');
+        return $this->userLevelProgress()->sum('stars_collected');
     }
 
     public function dailyRewards()

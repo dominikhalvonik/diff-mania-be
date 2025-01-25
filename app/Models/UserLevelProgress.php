@@ -10,7 +10,10 @@ class UserLevelProgress extends Model
     protected $fillable = [
         'user_id',
         'level_id',
-        'progress',
+        'stars_collected',
+        'completed',
+        'points_achieved',
+        'images_done',
     ];
 
     public function level()
