@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-
+use App\Models\AdminLogTable;
+use App\Models\UserAttribute;
+use App\Models\UserAttributeDefinition;
 
 class AdminController extends Controller
 {
@@ -65,5 +67,34 @@ class AdminController extends Controller
         $users = $query->paginate(10);
 
         return view('admin.users', compact('users'));
+    }
+
+    public function editUserAttributes($userId)
+    {
+        $user = User::findOrFail($userId);
+        $attributes = UserAttribute::where('user_id', $userId)->get();
+        $definitions = UserAttributeDefinition::all();
+
+        return view('admin.edit_user_attributes', compact('user', 'attributes', 'definitions'));
+    }
+
+    public function updateUserAttributes(Request $request, $userId)
+    {
+        $user = User::findOrFail($userId);
+        $attributes = $request->input('attributes');
+
+        foreach ($attributes as $attributeId => $value) {
+            $attribute = UserAttribute::findOrFail($attributeId);
+            $attribute->value = $value;
+            $attribute->save();
+
+            // Log the change
+            AdminLogTable::create([
+                'user_id' => Auth::id(),
+                'log_info' => 'Admin updated user attribute ' . $attributeId . ' for user ' . $user->nickname . ' to ' . $value,
+            ]);
+        }
+
+        return redirect()->route('admin.users')->with('success', 'User attributes updated successfully.');
     }
 }
