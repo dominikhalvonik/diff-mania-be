@@ -11,7 +11,6 @@ use App\Models\Image;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
-use Illuminate\Support\Facades\Log;
 
 class LevelController extends Controller
 {
@@ -58,7 +57,10 @@ class LevelController extends Controller
             $finishedImages = array_unique(array_merge($parsedImagesDone, $request->images_finished));
 
             $encodedFinishedImages = json_encode($finishedImages);
-            Log::info(json_encode($encodedFinishedImages));
+
+            // Check if the level is completed - all level images should be finished
+            $levelImages = LevelImage::where('level_id', $level->id)->pluck('image_name')->all();
+            $isCompleted = count($finishedImages) === count($levelImages);
 
             $user->userLevelProgress()->updateOrCreate(
                 [
@@ -67,7 +69,7 @@ class LevelController extends Controller
                 ],
                 [
                     'stars_collected' => $actualStars > $request->stars_collected ? $actualStars : $request->stars_collected,
-                    'completed' => true,
+                    'completed' => $isCompleted,
                     'points_achieved' => $actualPoints > $request->score ? $actualPoints : $request->score,
                     'finished_image_names' => (string) $encodedFinishedImages,
                 ]
