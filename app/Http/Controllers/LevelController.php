@@ -58,7 +58,6 @@ class LevelController extends Controller
 
             $encodedFinishedImages = json_encode($finishedImages);
 
-            // Check if the level is completed - all level images should be finished
             $levelImages = LevelImage::where('level_id', $level->id)->pluck('image_name')->all();
             $isCompleted = count($finishedImages) === count($levelImages);
 
@@ -81,7 +80,7 @@ class LevelController extends Controller
 
         LogTable::create([
             'user_id' => $user->id,
-            'log_info' => 'Finished level ' . $level->id . ' with stars collected ' . $request->score
+            'log_info' => 'Won level ' . $level->id . ' with ' . $request->stars_collected . ' stars' . ' and ' . $request->score . ' points' . ' and ' . count($request->images_finished) . ' images finished' . ' and ' . $experienceGained . ' experience gained',
         ]);
 
         $result = $experienceService->actualizeExperience($user, $experienceGained);
