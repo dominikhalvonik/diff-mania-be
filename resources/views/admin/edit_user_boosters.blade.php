@@ -10,18 +10,19 @@
     <div class="card-header bg-primary text-white">
       <h1 class="h3">Edit Boosters for {{ $user->name }}</h1>
     </div>
+
     <div class="card-body">
       <form action="{{ route('admin.update_user_boosters', $user->id) }}" method="POST">
         @csrf
         @method('PUT')
 
         <div class="table-responsive">
-          <table class="table table-bordered table-hover">
-            <thead class="thead-dark">
+          <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+            <thead class="bg-gray-800 text-white">
               <tr>
-                <th>Booster Name</th>
-                <th>Description</th>
-                <th>Amount</th>
+                <th class="py-3 px-6 text-left">Booster Name</th>
+                <th class="py-3 px-6 text-left">Description</th>
+                <th class="py-3 px-6 text-left">Amount</th>
               </tr>
             </thead>
             <tbody>
@@ -29,10 +30,10 @@
               @php
               $userBooster = $userBoosters->firstWhere('booster_id', $booster->id);
               @endphp
-              <tr>
-                <td>{{ $booster->name }}</td>
-                <td>{{ $booster->description }}</td>
-                <td>
+              <tr class="border-b hover:bg-gray-100">
+                <td class="py-3 px-6">{{ $booster->name }}</td>
+                <td class="py-3 px-6">{{ $booster->description }}</td>
+                <td class="py-3 px-6">
                   <div class="input-group">
                     <input type="number" name="boosters[{{ $booster->id }}]" value="{{ $userBooster ? $userBooster->quantity : 0 }}" class="form-control text-center" min="0">
                   </div>
@@ -43,9 +44,9 @@
           </table>
         </div>
 
-        <div class="form-group mt-3">
-          <button type="submit" class="btn btn-success">Save Changes</button>
-          <a href="{{ route('admin.users') }}" class="btn btn-secondary">Back</a>
+        <div class="flex justify-between mt-6">
+          <button type="submit" class="bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-700">Save Changes</button>
+          <a href="{{ route('admin.users') }}" class="bg-gray-500 text-white py-2 px-6 rounded hover:bg-gray-700">Back</a>
         </div>
       </form>
     </div>

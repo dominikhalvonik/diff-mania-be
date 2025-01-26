@@ -15,6 +15,7 @@ use App\Models\UserBooster;
 use App\Models\Ban;
 use Illuminate\Support\Facades\Hash;
 
+
 class AdminController extends Controller
 {
     public function showLoginForm()
@@ -42,14 +43,37 @@ class AdminController extends Controller
     public function dashboard()
     {
         $totalUsers = User::count();
+        $totalBannedUsers = Ban::count();
+        $recentRegistrations = User::orderBy('created_at', 'desc')->take(10)->get();
+        $activeUsers = User::whereHas('userAttributes', function ($query) {
+            $query->where('user_attribute_definition_id', User::LAST_LOGIN_DATE)
+                ->where('value', '>=', Carbon::now()->subDay()->toDateTimeString());
+        })->count();
+        $totalBoosters = UserBooster::sum('quantity');
 
         $dailyRegistrations = User::selectRaw('DATE(created_at) as date, COUNT(*) as count')
             ->where('created_at', '>=', Carbon::now()->subDays(7))
             ->groupBy('date')
             ->orderBy('date', 'asc')
-            ->get();
+            ->get()
+            ->keyBy('date');
 
-        return view('admin.dashboard', compact('totalUsers', 'dailyRegistrations'));
+        $dates = collect();
+        for ($i = 6; $i >= 0; $i--) {
+            $date = Carbon::now()->subDays($i)->toDateString();
+            $dates->put($date, $dailyRegistrations->get($date, (object)['date' => $date, 'count' => 0]));
+        }
+
+        $dailyRegistrations = $dates->values();
+
+        return view('admin.dashboard', compact(
+            'totalUsers',
+            'totalBannedUsers',
+            'recentRegistrations',
+            'activeUsers',
+            'totalBoosters',
+            'dailyRegistrations'
+        ));
     }
 
     public function users(Request $request)
