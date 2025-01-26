@@ -25,14 +25,18 @@ class CreateAdmin extends Command
 
         // create an admin user if it doesn't exist
         if (!$user) {
-            User::create([
+            $request = new \Illuminate\Http\Request([
                 'email' => $email,
-                'password' => Hash::make($password),
-                'is_admin' => 1,
-                'name' => 'Admin User - ' . $email,
+                'password' => $password,
+                'device_name' => 'Admin User - ' . $email,
                 'nickname' => 'Admin ' . rand(1000, 9999),
                 'is_email_enabled' => true,
             ]);
+            $user = app('App\Services\LoginService')->createNewUser($request);
+            $user->is_admin = true;
+            $user->save();
+            app('App\Services\LoginService')->createBasicUserAttributes($user);
+            app('App\Services\LoginService')->createUserSettings($user);
         } else if ($user->is_admin) {
             $this->error('Admin user already exists.');
         } else {
