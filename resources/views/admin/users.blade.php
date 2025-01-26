@@ -5,109 +5,52 @@
 @section('header', 'Users')
 
 @section('content')
-<style>
-    form {
-        margin-bottom: 20px;
-    }
-
-    form div {
-        margin-bottom: 10px;
-    }
-
-    label {
-        display: inline-block;
-        width: 100px;
-    }
-
-    input[type="text"] {
-        padding: 5px;
-        width: 200px;
-    }
-
-    button {
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 14px;
-        transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-        background-color: #0056b3;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    th,
-    td {
-        padding: 10px;
-        border: 1px solid #ddd;
-        text-align: left;
-    }
-
-    th {
-        background-color: #f2f2f2;
-    }
-
-    .pagination {
-        margin-top: 20px;
-        text-align: center;
-    }
-</style>
-
-<form method="GET" action="{{ route('admin.users') }}">
-    <div>
-        <label>Email:</label>
-        <input type="text" name="email" value="{{ request('email') }}">
+<form method="GET" action="{{ route('admin.users') }}" class="mb-6">
+    <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
+        <input type="text" name="email" value="{{ request('email') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
     </div>
-    <div>
-        <label>Nickname:</label>
-        <input type="text" name="nickname" value="{{ request('nickname') }}">
+    <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2">Nickname:</label>
+        <input type="text" name="nickname" value="{{ request('nickname') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
     </div>
-    <div>
-        <label>User ID:</label>
-        <input type="text" name="user_id" value="{{ request('user_id') }}">
+    <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2">User ID:</label>
+        <input type="text" name="user_id" value="{{ request('user_id') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
     </div>
-    <button type="submit">Filter</button>
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Filter</button>
 </form>
-<table>
+<table class="min-w-full bg-white border-collapse">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Email</th>
-            <th>Nickname</th>
-            <th>Actions</th>
+            <th class="py-2 px-4 border-b border-gray-200 bg-gray-100 text-left text-sm leading-4 font-medium text-gray-700 uppercase tracking-wider">ID</th>
+            <th class="py-2 px-4 border-b border-gray-200 bg-gray-100 text-left text-sm leading-4 font-medium text-gray-700 uppercase tracking-wider">Email</th>
+            <th class="py-2 px-4 border-b border-gray-200 bg-gray-100 text-left text-sm leading-4 font-medium text-gray-700 uppercase tracking-wider">Nickname</th>
+            <th class="py-2 px-4 border-b border-gray-200 bg-gray-100 text-left text-sm leading-4 font-medium text-gray-700 uppercase tracking-wider">Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach ($users as $user)
         <tr>
-            <td>{{ $user->id }}</td>
-            <td>{{ $user->email }}</td>
-            <td>{{ $user->nickname }}</td>
-            <td>
-                <form method="GET" action="{{ route('admin.edit_user_attributes', ['user' => $user->id]) }}" style="display:inline;">
-                    <button type="submit">Edit Attributes</button>
+            <td class="py-2 px-4 border-b border-gray-200">{{ $user->id }}</td>
+            <td class="py-2 px-4 border-b border-gray-200">{{ $user->email }}</td>
+            <td class="py-2 px-4 border-b border-gray-200">{{ $user->nickname }}</td>
+            <td class="py-2 px-4 border-b border-gray-200">
+                <form method="GET" action="{{ route('admin.edit_user_attributes', ['user' => $user->id]) }}" class="inline">
+                    <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline">Edit Attributes</button>
                 </form>
-                <form method="GET" action="{{ route('admin.edit_user_boosters', ['user' => $user->id]) }}" style="display:inline;">
-                    <button type="submit">Edit Boosters</button>
+                <form method="GET" action="{{ route('admin.edit_user_boosters', ['user' => $user->id]) }}" class="inline">
+                    <button type="submit" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline">Edit Boosters</button>
                 </form>
-                <form method="GET" action="{{ route('admin.ban_user', ['user' => $user->id]) }}" style="display:inline;">
-                    <button type="submit">Ban</button>
+                <form method="GET" action="{{ route('admin.ban_user', ['user' => $user->id]) }}" class="inline">
+                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline">Ban</button>
                 </form>
             </td>
         </tr>
         @endforeach
     </tbody>
 </table>
-<div class="pagination">
+<div class="mt-6">
     {{ $users->links() }}
 </div>
 @endsection

@@ -1,94 +1,32 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Admin Login</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to right, #6a11cb, #2575fc);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .login-container {
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      width: 500px;
-      text-align: center;
-    }
-    .login-container h2 {
-      margin-bottom: 25px;
-      color: #333;
-      font-size: 24px;
-    }
-    .login-container label {
-      display: block;
-      margin-bottom: 8px;
-      color: #555;
-      text-align: left;
-    }
-    .login-container input {
-      width: 94%;
-      padding: 12px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-    .login-container button {
-      width: 100%;
-      padding: 12px;
-      background-color: #007bff;
-      border: none;
-      border-radius: 5px;
-      color: #fff;
-      font-size: 18px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    .login-container button:hover {
-      background-color: #0056b3;
-    }
-    .login-container .forgot-password {
-      margin-top: 15px;
-      display: block;
-      color: #007bff;
-      text-decoration: none;
-      font-size: 14px;
-    }
-    .login-container .forgot-password:hover {
-      text-decoration: underline;
-    }
-    .alert {
-      color: #721c24;
-      background-color: #f8d7da;
-      border-color: #f5c6cb;
-      padding: 10px;
-      margin-bottom: 20px;
-      border-radius: 5px;
-    }
-  </style>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-  <div class="login-container">
-    <h2>Admin Login</h2>
+
+<body class="bg-gradient-to-r from-purple-600 to-blue-500 flex justify-center items-center h-screen">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md text-center">
+    <h2 class="mb-6 text-2xl font-semibold text-gray-800">Admin Login</h2>
     @if (session('error'))
-      <div class="alert">
-        {{ session('error') }}
-      </div>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+      {{ session('error') }}
+    </div>
     @endif
     <form method="POST" action="{{ route('admin.login.submit') }}">
       @csrf
-        <label>Email:</label>
-        <input type="email" name="email" required>
-        <label>Password:</label>
-        <input type="password" name="password" required>
-      <button type="submit">Login</button>
+      <div class="mb-4 text-left">
+        <label class="block text-gray-700 mb-2">Email:</label>
+        <input type="email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div class="mb-6 text-left">
+        <label class="block text-gray-700 mb-2">Password:</label>
+        <input type="password" name="password" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <button type="submit" class="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-300">Login</button>
     </form>
   </div>
 </body>
+
 </html>

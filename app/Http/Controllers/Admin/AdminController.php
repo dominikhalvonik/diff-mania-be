@@ -13,6 +13,7 @@ use App\Models\UserAttributeDefinition;
 use App\Models\Booster;
 use App\Models\UserBooster;
 use App\Models\Ban;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -30,7 +31,7 @@ class AdminController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if ($user->is_admin) {
+        if (Hash::check($request->password, $user->password) && $user->is_admin) {
             Auth::login($user);
             return redirect()->route('admin.dashboard');
         }
