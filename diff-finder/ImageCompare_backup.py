@@ -5,11 +5,24 @@ from typing import List, Dict
 
 class ImageCompare:
   def __init__(self, merge_threshold: int = 5, contour_area_threshold: int = 20, padding: int = 15):
+    """
+    Initialize the ImageCompare class with default parameters.
+
+    :param merge_threshold: Threshold for merging bounding boxes. Default is 5.
+    :param contour_area_threshold: Minimum area of contours to be considered as differences. Default is 20.
+    :param padding: Padding around bounding boxes. Default is 15.
+    """
     self.merge_threshold = merge_threshold
     self.contour_area_threshold = contour_area_threshold
     self.padding = padding
 
   def merge_bounding_boxes(self, bboxes: List[Dict[str, int]]) -> List[Dict[str, int]]:
+    """
+    Merge overlapping or nearby bounding boxes.
+
+    :param bboxes: List of bounding boxes.
+    :return: List of merged bounding boxes.
+    """
     merged_bboxes = []
     bboxes = sorted(bboxes, key=lambda x: x["x"])
 
@@ -36,6 +49,13 @@ class ImageCompare:
     return merged_bboxes
 
   def find_image_differences(self, image1_path: str, image2_path: str) -> List[Dict[str, int]]:
+    """
+    Find differences between two images.
+
+    :param image1_path: Path to the first image.
+    :param image2_path: Path to the second image.
+    :return: List of bounding boxes representing differences.
+    """
     img1 = cv2.imread(image1_path)
     img2 = cv2.imread(image2_path)
     if img1.shape != img2.shape:
@@ -47,65 +67,38 @@ class ImageCompare:
     diff = cv2.absdiff(gray1, gray2)
     _, thresh = cv2.threshold(diff, 25, 255, cv2.THRESH_BINARY)
     contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    
     bboxes = []
-    current_threshold = self.contour_area_threshold
-    target_differences = 10
 
-    while target_differences > 5:
-      bboxes.clear()
-      for contour in contours:
-        if cv2.contourArea(contour) > current_threshold:
-          x, y, w, h = cv2.boundingRect(contour)
-          x -= self.padding
-          y -= self.padding
-          w += 2 * self.padding
-          h += 2 * self.padding
-          x = max(x, 0)
-          y = max(y, 0)
-          h = min(h, img1.shape[0] - y)
-          w = min(w, img1.shape[1] - x)
-          bboxes.append({"x": x, "y": y, "width": w, "height": h})
-      
-      
-      merged_bboxes = self.merge_bounding_boxes(bboxes)
-      
-      if len(merged_bboxes) == target_differences:
-        self.differences = merged_bboxes
-        break
-      elif len(merged_bboxes) == 7:
-        print("Found 7 differences. It is finished")
-        self.differences = merged_bboxes
-        break
-      elif len(merged_bboxes) == 5:
-        print("Found 5 differences. It is finished")
-        self.differences = merged_bboxes
-        break
-      elif len(merged_bboxes) < target_differences:
-        current_threshold += 1
-        if current_threshold > 300:
-          continue
-      elif len(merged_bboxes) > target_differences:
-        current_threshold -= 1
-        if current_threshold < 0:
-          continue
+    for contour in contours:
+      if cv2.contourArea(contour) > self.contour_area_threshold:
+        x, y, w, h = cv2.boundingRect(contour)
+        x -= self.padding
+        y -= self.padding
+        w += 2 * self.padding
+        h += 2 * self.padding
+        x = max(x, 0)
+        y = max(y, 0)
+        h = min(h, img1.shape[0] - y)
+        w = min(w, img1.shape[1] - x)
+        bboxes.append({"x": x, "y": y, "width": w, "height": h})
         
-      if target_differences == 10:
-        target_differences = 7
-      elif target_differences == 7:
-        target_differences = 5
-      else:
-        print(f"Merged bounding boxes: {len(merged_bboxes)}")
-        print("Could not find the correct amount of differences" + str(target_differences) + " " + image1_path)
-        return self.differences
+    self.differences = self.merge_bounding_boxes(bboxes)
 
     return self.differences
   
   def create_out_path(self, out_path):
+    # Create the out directory if it does not exist
     if not os.path.exists(out_path):
       os.makedirs(out_path)
+      
 
   def save_differences_to_json(self, image_id: str, out_path: str = "out") -> None:
+    """
+    Save differences to a JSON file.
+
+    :param image_id: Identifier for the image.
+    :param out_path: Path to save the JSON file. Default is "out".
+    """
     if not hasattr(self, 'differences'):
       raise ValueError("Differences have not been calculated. Please run find_image_differences first.")
     
@@ -114,12 +107,18 @@ class ImageCompare:
       "differences": self.differences
     }
     
+    # Create the out directory if it does not exist
     self.create_out_path(out_path)
   
     with open(f"{out_path}/{image_id}.json", "w") as f:
       json.dump(data, f)
       
   def return_differences_as_json(self) -> str:
+    """
+    Return differences as a JSON string.
+
+    :return: JSON string of differences.
+    """
     if not hasattr(self, 'differences'):
       raise ValueError("Differences have not been calculated. Please run find_image_differences first.")
     
@@ -129,7 +128,15 @@ class ImageCompare:
     
     return json.dumps(data)
 
+
   def create_image_with_differences(self, image1_path: str, output_image_path: str) -> None:
+    """
+    Create sections from differences and save the output image.
+
+    :param image1_path: Path to the base image.
+    :param json_path: Path to the JSON file containing differences.
+    :param output_image_path: Path to save the output image.
+    """
     if not hasattr(self, 'differences'):
       raise ValueError("Differences have not been calculated. Please run find_image_differences first.")
     
@@ -146,6 +153,9 @@ class ImageCompare:
     print(f"Image with sections saved as {output_image_path}")
 
   def save_original_images(self, image1_path: str, image2_path: str, output_image_path: str) -> None:
+    """
+    Save the original images to the output folder.
+    """
     if not hasattr(self, 'differences'):
       raise ValueError("Differences have not been calculated. Please run find_image_differences first.")
     
