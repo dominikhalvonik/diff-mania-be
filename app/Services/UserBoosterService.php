@@ -51,6 +51,8 @@ class UserBoosterService
           return false;
         }
         $userBooster->save();
+      } else {
+        return false;
       }
 
       LogTable::create([
