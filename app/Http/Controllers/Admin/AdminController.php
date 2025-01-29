@@ -61,7 +61,7 @@ class AdminController extends Controller
         $dates = collect();
         for ($i = 6; $i >= 0; $i--) {
             $date = Carbon::now()->subDays($i)->toDateString();
-            $dates->put($date, $dailyRegistrations->get($date, (object)['date' => $date, 'count' => 0]));
+            $dates->put($date, $dailyRegistrations->get($date, (object) ['date' => $date, 'count' => 0]));
         }
 
         $dailyRegistrations = $dates->values();

@@ -15,6 +15,7 @@
           <th class="py-2 px-4 border-b">User Name</th>
           <th class="py-2 px-4 border-b">Reason</th>
           <th class="py-2 px-4 border-b">Banned At</th>
+          <th class="py-2 px-4 border-b">Email</th>
           <th class="py-2 px-4 border-b">Action</th>
         </tr>
       </thead>
@@ -24,6 +25,7 @@
           <td class="py-2 px-4 border-b">{{ $ban->user->name }}</td>
           <td class="py-2 px-4 border-b">{{ $ban->reason }}</td>
           <td class="py-2 px-4 border-b">{{ $ban->banned_at }}</td>
+          <td class="py-2 px-4 border-b">{{ $ban->user->email }}</td>
           <td class="py-2 px-4 border-b">
             <form action="{{ route('admin.unban_user', $ban->user_id) }}" method="POST">
               @csrf
