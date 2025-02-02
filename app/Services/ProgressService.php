@@ -14,7 +14,7 @@ class ProgressService
     $progress = $progress->groupBy('level_id');
 
     // Get all episodes with associated levels and cache it to redis
-    $episodes = Cache::remember('episodes', 120, function () {
+    $episodes = Cache::remember('episodes', LONG_CACHE_TIME, function () {
       return Episode::with('levels')->get();
     });
 

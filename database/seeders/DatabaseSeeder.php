@@ -26,6 +26,5 @@ class DatabaseSeeder extends Seeder
         $this->call(TaskConfigSeeder::class);
         $this->call(LevelConfigSeeder::class);
         $this->call(DailyRewardConfigSeeder::class);
-        // $this->call(LevelImageSeeder::class);
     }
 }

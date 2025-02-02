@@ -3,21 +3,24 @@
 namespace App\Services;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Cache;
 use App\Models\GameConfig;
-use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Log;
 
 class LifeRefillService
 {
+  function __construct(private readonly GameConfig $gameConfig)
+  {
+  }
+
+
   public function checkAndRefill(User $user)
   {
     // Get the config
-    $config = Cache::remember(GameConfig::CORE_CONFIG, 60, function () {
-      return GameConfig::where('name', GameConfig::CORE_CONFIG)->first();
-    });
+    $config = $this->gameConfig->getCoreConfig();
 
-    $config = json_decode($config->value);
+    Log::info('Config: ' . json_encode($config));
+
     $maxLives = $config->max_lives;
     $refillInterval = $config->lives_refill_time;
 

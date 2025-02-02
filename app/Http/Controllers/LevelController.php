@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\LevelImage;
+use App\Models\GameConfig;
 use App\Services\ExperienceService;
 use App\Models\LogTable;
+use App\Services\LevelImageService;
 use Illuminate\Http\Request;
 use App\Models\Level;
 use App\Models\Image;
@@ -14,23 +15,21 @@ use App\Models\User;
 
 class LevelController extends Controller
 {
+
+    function __construct(private readonly Level $level, private readonly LevelImageService $levelImageService)
+    {
+    }
+
     public function getLevelDataWithImages(Request $request, string $levelId)
     {
         // Fetch the level data and add it to cache
-        $level = Cache::remember('level_' . $levelId, 120, function () use ($levelId) {
+        $level = Cache::remember('level_' . $levelId, LONG_CACHE_TIME, function () use ($levelId) {
             return Level::find($levelId);
         });
 
-        $levelImages = LevelImage::where('level_id', $level->id)->pluck('image_name')->all();
+        $levelConfiguration = $this->levelImageService->getLevelImagesFromConfig($level);
 
-        $imageInformations = Image::whereIn('name', $levelImages)->get();
-
-        // Revert the string json_diff to an array
-        $imageInformations->each(function ($image) {
-            $image->json_diff = json_decode($image->json_diff, true);
-        });
-
-        return response()->json($imageInformations);
+        return response()->json($levelConfiguration);
     }
 
     public function winLevel(Request $request, Level $level, ExperienceService $experienceService)
@@ -48,17 +47,19 @@ class LevelController extends Controller
             return response()->json(['message' => 'Level allready finished with more stars']);
         }
 
-        DB::transaction(function () use ($user, $level, $request) {
-            $actualStars = $user->userLevelProgress()->where('level_id', $level->id)->first()->stars_collected ?? 0;
-            $actualPoints = $user->userLevelProgress()->where('level_id', $level->id)->first()->points_achieved ?? 0;
-            $actualImagesDone = $user->userLevelProgress()->where('level_id', $level->id)->first()->finished_image_names ?? '[]';
-            $parsedImagesDone = json_decode($actualImagesDone, true);
+        $actualStars = $user->userLevelProgress()->where('level_id', $level->id)->first()->stars_collected ?? 0;
+        $actualPoints = $user->userLevelProgress()->where('level_id', $level->id)->first()->points_achieved ?? 0;
+        $actualImagesDone = $user->userLevelProgress()->where('level_id', $level->id)->first()->finished_image_names ?? '[]';
+        $parsedImagesDone = json_decode($actualImagesDone, true);
+
+        DB::transaction(function () use ($user, $level, $request, $actualStars, $actualPoints, $parsedImagesDone) {
 
             $finishedImages = array_unique(array_merge($parsedImagesDone, $request->images_finished));
 
             $encodedFinishedImages = json_encode($finishedImages);
 
-            $levelImages = LevelImage::where('level_id', $level->id)->pluck('image_name')->all();
+            // TODO: Chanee it to dynamic content
+            $levelImages = []; // LevelImage::where('level_id', $level->id)->pluck('image_name')->all();
             $isCompleted = count($finishedImages) === count($levelImages);
 
             $user->userLevelProgress()->updateOrCreate(

@@ -11,14 +11,12 @@ use Illuminate\Support\Facades\DB;
 
 class ExperienceService
 {
-
-  private const TEN_DAYS = 60 * 24 * 10;
   private const LEVEL_UP_CONFIG = 'level_up_config';
 
   public function actualizeExperience(User $user, int $experienceGained)
   {
     // Check if the user has leveled up
-    $levelUpConfig = Cache::remember($this::LEVEL_UP_CONFIG, self::TEN_DAYS, function () {
+    $levelUpConfig = Cache::remember($this::LEVEL_UP_CONFIG, LONG_CACHE_TIME, function () {
       return LevelConfig::pluck('experience', 'level')->toArray();
     });
 
@@ -76,7 +74,7 @@ class ExperienceService
   private function getLevelUpRewards(int $level)
   {
     // Define rewards based on level
-    $rewardsConfig = Cache::remember('level_rewards', self::TEN_DAYS, function () {
+    $rewardsConfig = Cache::remember('level_rewards', LONG_CACHE_TIME, function () {
       return LevelConfig::pluck('coin_reward', 'level')->toArray();
     });
     return $rewardsConfig[$level + 1] ?? [];
@@ -84,7 +82,7 @@ class ExperienceService
 
   public function calculateExperienceForNextLevel(User $user)
   {
-    $levelUpConfig = Cache::remember($this::LEVEL_UP_CONFIG, self::TEN_DAYS, function () {
+    $levelUpConfig = Cache::remember($this::LEVEL_UP_CONFIG, LONG_CACHE_TIME, function () {
       return LevelConfig::pluck('experience', 'level')->toArray();
     });
 

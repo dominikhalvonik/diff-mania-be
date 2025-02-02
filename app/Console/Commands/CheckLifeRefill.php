@@ -26,6 +26,12 @@ class CheckLifeRefill extends Command
      */
     protected $description = 'Command description';
 
+
+    function __construct(private readonly GameConfig $gameConfig)
+    {
+        parent::__construct();
+    }
+
     /**
      * Execute the console command.
      */
@@ -35,10 +41,7 @@ class CheckLifeRefill extends Command
 
         $refillAttributes = UserAttribute::where('user_attribute_definition_id', User::LAST_REFILL_TIMER)->get();
 
-        $config = Cache::remember(GameConfig::CORE_CONFIG, 60, function () {
-            return GameConfig::where('name', GameConfig::CORE_CONFIG)->first();
-        });
-        $config = json_decode($config->value);
+        $config = $this->gameConfig->getCoreConfig();
 
         $maxLives = $config->max_lives;
         $refillTime = $config->lives_refill_time;

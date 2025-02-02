@@ -15,7 +15,7 @@ class DailyRewardService
     // Get the last login
     $lastLogin = $user->userAttributes->where('user_attribute_definition_id', User::LAST_LOGIN_DATE)->first()->value;
 
-    $dailyRewardConfig = Cache::remember(DailyRewardConfig::REWARD_CONFIG_CACHE_KEY, 60, function () {
+    $dailyRewardConfig = Cache::remember(DailyRewardConfig::REWARD_CONFIG_CACHE_KEY, LONG_CACHE_TIME, function () {
       return DailyRewardConfig::all()->mapWithKeys(function ($dailyRewardConf) {
         return [$dailyRewardConf->day => $dailyRewardConf->reward_coins];
       });

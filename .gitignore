@@ -23,6 +23,8 @@ yarn-error.log
 # Created by https://www.toptal.com/developers/gitignore/api/macos,python,jupyternotebooks
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,python,jupyternotebooks
 
+*/in/*
+
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/

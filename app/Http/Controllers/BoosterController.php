@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AdminLogTable;
 use App\Services\UserBoosterService;
 use Illuminate\Http\Request;
 use App\Models\Booster;
@@ -31,11 +30,6 @@ class BoosterController extends Controller
         $user = $request->user();
 
         $result = $userBoosterService->addBooster($user, $booster, 1);
-
-        AdminLogTable::create([
-            'log_info' => 'Admin added a boost of ' . $booster->name . ' to user ' . $user->nickname . ' amount 1',
-            'user_id' => $user->id,
-        ]);
 
         if ($result) {
             return response()->json([

@@ -120,6 +120,7 @@ class AdminController extends Controller
             AdminLogTable::create([
                 'user_id' => Auth::id(),
                 'log_info' => 'Admin updated user attribute ' . $attributeId . ' for user ' . $user->nickname . ' to ' . $value,
+                'value' => $value,
             ]);
         }
 
@@ -144,6 +145,12 @@ class AdminController extends Controller
             $userBooster = UserBooster::firstOrNew(['user_id' => $userId, 'booster_id' => $boosterId]);
             $userBooster->quantity = $amount;
             $userBooster->save();
+
+            AdminLogTable::create([
+                'log_info' => 'Admin added a boost of ' . $userBooster->name . ' to user ' . $user->nickname . ' amount ' . $amount,
+                'user_id' => $user->id,
+                'value' => $amount,
+            ]);
         }
 
         return redirect()->route('admin.users')->with('success', 'User boosters updated successfully.');
@@ -166,6 +173,11 @@ class AdminController extends Controller
             'banned_at' => Carbon::now(),
         ]);
 
+        AdminLogTable::create([
+            'log_info' => 'Admin' . Auth::id() . 'banned user ' . $user->nickname . ' for reason ' . $request->input('reason'),
+            'user_id' => $user->id,
+        ]);
+
         return redirect()->route('admin.users')->with('success', 'User banned successfully.');
     }
 
@@ -179,6 +191,11 @@ class AdminController extends Controller
     {
         $ban = Ban::where('user_id', $userId)->firstOrFail();
         $ban->delete();
+
+        AdminLogTable::create([
+            'log_info' => 'Admin' . Auth::id() . 'unbanned user ' . $ban->user->nickname,
+            'user_id' => $ban->id,
+        ]);
 
         return redirect()->route('admin.banned_users')->with('success', 'User unbanned successfully.');
     }

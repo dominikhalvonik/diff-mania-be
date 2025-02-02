@@ -31,7 +31,7 @@ class ExperienceServiceTest extends TestCase
     ]);
 
     Cache::shouldReceive('remember')
-      ->with('level_up_config', ExperienceService::TEN_DAYS, \Closure::class)
+      ->with('level_up_config', SHORT_CACHE_TIME, \Closure::class)
       ->andReturnUsing(function () {
         return [1 => 100, 2 => 200];
       });
@@ -56,13 +56,13 @@ class ExperienceServiceTest extends TestCase
     ]);
 
     Cache::shouldReceive('remember')
-      ->with('level_up_config', ExperienceService::TEN_DAYS, \Closure::class)
+      ->with('level_up_config', SHORT_CACHE_TIME, \Closure::class)
       ->andReturnUsing(function () {
         return [2 => 50];
       });
 
     Cache::shouldReceive('remember')
-      ->with('level_rewards', ExperienceService::TEN_DAYS, \Closure::class)
+      ->with('level_rewards', SHORT_CACHE_TIME, \Closure::class)
       ->andReturnUsing(function () {
         return [2 => 50];
       });
